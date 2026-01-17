@@ -4,6 +4,8 @@ import Welcome from './pages/Welcome';
 import AuthCallback from './pages/AuthCallback';
 import RoleSelect from './pages/RoleSelect';
 import ClientHome from './pages/client/ClientHome';
+import SearchPage from './pages/client/SearchPage';
+import ResultsPage from './pages/client/ResultsPage';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 
@@ -23,6 +25,24 @@ function App() {
             element={
               <ProtectedRoute role="client">
                 <ClientHome />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/client/search"
+            element={
+              <ProtectedRoute role="client">
+                <SearchPage />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/client/results"
+            element={
+              <ProtectedRoute role="client">
+                <ResultsPage />
               </ProtectedRoute>
             }
           />

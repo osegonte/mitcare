@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { UserRole } from '../types';
+import type { UserRole } from '../types';
 
 export async function handleAuthCallback() {
   const { data: { user } } = await supabase.auth.getUser();
