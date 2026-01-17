@@ -1,20 +1,322 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
+import { Heart, Calendar, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
+import type { Booking } from '../../types';
+
+type BookingWithClient = Booking & {
+  client: {
+    full_name: string;
+    email: string;
+  };
+};
 
 export default function ProviderDashboard() {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+  const [provider, setProvider] = useState<any>(null);
+  const [bookings, setBookings] = useState<BookingWithClient[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    pending: 0,
+    accepted: 0,
+    completed: 0,
+  });
+
+  useEffect(() => {
+    fetchProviderData();
+    fetchBookings();
+  }, [user]);
+
+  const fetchProviderData = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('providers')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error) {
+        // Provider profile doesn't exist yet
+        console.log('No provider profile found');
+        return;
+      }
+
+      setProvider(data);
+    } catch (error) {
+      console.error('Error fetching provider:', error);
+    }
+  };
+
+  const fetchBookings = async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+
+      // First get provider ID
+      const { data: providerData } = await supabase
+        .from('providers')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!providerData) {
+        setLoading(false);
+        return;
+      }
+
+      // Then get bookings
+      const { data, error } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          client:profiles!bookings_client_id_fkey(full_name, email)
+        `)
+        .eq('provider_id', providerData.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const bookingsWithClient = data.map(booking => ({
+        ...booking,
+        client: booking.client,
+      }));
+
+      setBookings(bookingsWithClient);
+
+      // Calculate stats
+      const pending = bookingsWithClient.filter(b => b.status === 'pending').length;
+      const accepted = bookingsWithClient.filter(b => b.status === 'accepted').length;
+      const completed = bookingsWithClient.filter(b => b.status === 'completed').length;
+
+      setStats({ pending, accepted, completed });
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDateTime = (dateTimeString: string) => {
+    const date = new Date(dateTimeString);
+    return date.toLocaleDateString('en-GB', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const getStatusBadge = (status: Booking['status']) => {
+    const styles = {
+      pending: 'bg-yellow-100 text-yellow-700',
+      accepted: 'bg-green-100 text-green-700',
+      declined: 'bg-red-100 text-red-700',
+      cancelled: 'bg-gray-100 text-gray-700',
+      completed: 'bg-blue-100 text-blue-700',
+    };
+
+    return (
+      <span className={`px-3 py-1 rounded-full text-xs font-medium ${styles[status]}`}>
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </span>
+    );
+  };
+
+  // If no provider profile exists, show onboarding message
+  if (!loading && !provider) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+        <header className="bg-white shadow-sm">
+          <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+                <Heart className="w-5 h-5 text-white" fill="currentColor" />
+              </div>
+              <h1 className="text-xl font-bold text-gray-900">MitCare Provider</h1>
+            </div>
+            <button onClick={signOut} className="text-sm text-gray-600 hover:text-gray-900">
+              Sign Out
+            </button>
+          </div>
+        </header>
+
+        <main className="max-w-4xl mx-auto px-4 py-16">
+          <div className="bg-white rounded-2xl p-8 shadow-xl text-center">
+            <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-8 h-8 text-teal-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Complete Your Provider Profile
+            </h2>
+            <p className="text-gray-600 mb-6">
+              To start receiving booking requests, you need to set up your agency profile first.
+            </p>
+            <button
+              onClick={() => navigate('/provider/onboarding')}
+              className="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-colors"
+            >
+              Set Up Profile
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+      </div>
+    );
+  }
+
+  const pendingBookings = bookings.filter(b => b.status === 'pending').slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Provider Dashboard</h1>
-        <p className="mb-4">Welcome, {user?.full_name || user?.email}!</p>
-        <button
-          onClick={signOut}
-          className="bg-red-600 text-white px-4 py-2 rounded-lg"
-        >
-          Sign Out
-        </button>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+              <Heart className="w-5 h-5 text-white" fill="currentColor" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">MitCare Provider</h1>
+              <p className="text-xs text-gray-600">{provider?.agency_name}</p>
+            </div>
+          </div>
+          <button onClick={signOut} className="text-sm text-gray-600 hover:text-gray-900">
+            Sign Out
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.full_name?.split(' ')[0] || 'there'}!
+          </h2>
+          <p className="text-gray-600">Manage your bookings and grow your business.</p>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="bg-white rounded-xl p-5 shadow">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                <Clock className="w-5 h-5 text-yellow-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{stats.pending}</p>
+                <p className="text-sm text-gray-600">Pending</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-5 shadow">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{stats.accepted}</p>
+                <p className="text-sm text-gray-600">Accepted</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl p-5 shadow">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
+                <p className="text-sm text-gray-600">Completed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-4 mb-8">
+          <button
+            onClick={() => navigate('/provider/bookings')}
+            className="bg-teal-600 text-white rounded-xl p-6 shadow-lg hover:bg-teal-700 transition-all text-left"
+          >
+            <Calendar className="w-8 h-8 mb-3" />
+            <h3 className="text-lg font-semibold mb-1">All Bookings</h3>
+            <p className="text-teal-100 text-sm">View and manage all requests</p>
+          </button>
+
+          <button
+            onClick={() => navigate('/provider/profile')}
+            className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-left"
+          >
+            <CheckCircle className="w-8 h-8 text-teal-600 mb-3" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-1">My Profile</h3>
+            <p className="text-gray-600 text-sm">Update your information</p>
+          </button>
+        </div>
+
+        {/* Recent Pending Requests */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Pending Requests ({stats.pending})
+            </h3>
+            {stats.pending > 5 && (
+              <button
+                onClick={() => navigate('/provider/bookings')}
+                className="text-sm text-teal-600 hover:text-teal-700"
+              >
+                View All
+              </button>
+            )}
+          </div>
+
+          {pendingBookings.length === 0 ? (
+            <div className="text-center py-8">
+              <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-600">No pending requests</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {pendingBookings.map((booking) => (
+                <div
+                  key={booking.id}
+                  onClick={() => navigate('/provider/bookings')}
+                  className="p-4 border-2 border-gray-200 rounded-xl hover:border-teal-600 transition-all cursor-pointer"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="font-semibold text-gray-900">{booking.client.full_name}</p>
+                      <p className="text-sm text-gray-600">{booking.service_type}</p>
+                    </div>
+                    {getStatusBadge(booking.status)}
+                  </div>
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDateTime(booking.date_time)}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 }

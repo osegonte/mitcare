@@ -1,10 +1,37 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 import { Heart, Search, Calendar, MessageSquare, Bookmark } from 'lucide-react';
 
 export default function ClientHome() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [bookingCount, setBookingCount] = useState(0);
+  const [loadingCount, setLoadingCount] = useState(true);
+
+  useEffect(() => {
+    const fetchBookingCount = async () => {
+      if (!user) return;
+      
+      try {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select('id', { count: 'exact' })
+          .eq('client_id', user.id)
+          .in('status', ['pending', 'accepted']);
+        
+        if (error) throw error;
+        setBookingCount(data?.length || 0);
+      } catch (error) {
+        console.error('Error fetching booking count:', error);
+      } finally {
+        setLoadingCount(false);
+      }
+    };
+    
+    fetchBookingCount();
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
@@ -56,10 +83,21 @@ export default function ClientHome() {
 
         {/* Quick Actions Grid */}
         <div className="grid grid-cols-2 gap-4 mb-8">
-          <button className="bg-white rounded-xl p-5 shadow hover:shadow-md transition-all text-left">
+          <button
+            onClick={() => navigate('/client/appointments')}
+            className="bg-white rounded-xl p-5 shadow hover:shadow-md transition-all text-left"
+          >
             <Calendar className="w-8 h-8 text-teal-600 mb-3" />
             <h3 className="font-semibold text-gray-900 mb-1">Appointments</h3>
-            <p className="text-sm text-gray-500">No upcoming bookings</p>
+            <p className="text-sm text-gray-500">
+              {loadingCount ? (
+                'Loading...'
+              ) : bookingCount > 0 ? (
+                `${bookingCount} upcoming`
+              ) : (
+                'No upcoming bookings'
+              )}
+            </p>
           </button>
 
           <button className="bg-white rounded-xl p-5 shadow hover:shadow-md transition-all text-left">

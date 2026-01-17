@@ -11,6 +11,9 @@ import ProtectedRoute from './components/shared/ProtectedRoute';
 import ProviderDetailPage from './pages/client/ProviderDetailPage';
 import BookingPage from './pages/client/BookingPage';
 import BookingConfirmationPage from './pages/client/BookingConfirmationPage';
+import AppointmentsPage from './pages/client/AppointmentsPage';
+import ProviderBookingsPage from './pages/provider/ProviderBookingsPage';
+import ProviderOnboarding from './pages/provider/ProviderOnboarding';
 
 function App() {
   return (
@@ -56,11 +59,11 @@ function App() {
               <ProtectedRoute role="client">
                 <ProviderDetailPage />
               </ProtectedRoute>
-        }
-      />
+            }
+          />
 
           <Route
-            path="/client/booking/:id"
+            path="/client/book/:id"
             element={
               <ProtectedRoute role="client">
                 <BookingPage />
@@ -77,12 +80,39 @@ function App() {
             }
           />
 
+          <Route
+            path="/client/appointments"
+            element={
+              <ProtectedRoute role="client">
+                <AppointmentsPage />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Protected provider routes */}
           <Route
             path="/provider/dashboard"
             element={
               <ProtectedRoute role="provider">
                 <ProviderDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/provider/bookings"
+            element={
+              <ProtectedRoute role="provider">
+                <ProviderBookingsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/provider/onboarding"
+            element={
+              <ProtectedRoute role="provider">
+                <ProviderOnboarding />
               </ProtectedRoute>
             }
           />
