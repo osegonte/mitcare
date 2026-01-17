@@ -8,6 +8,9 @@ import SearchPage from './pages/client/SearchPage';
 import ResultsPage from './pages/client/ResultsPage';
 import ProviderDashboard from './pages/provider/ProviderDashboard';
 import ProtectedRoute from './components/shared/ProtectedRoute';
+import ProviderDetailPage from './pages/client/ProviderDetailPage';
+import BookingPage from './pages/client/BookingPage';
+import BookingConfirmationPage from './pages/client/BookingConfirmationPage';
 
 function App() {
   return (
@@ -43,6 +46,33 @@ function App() {
             element={
               <ProtectedRoute role="client">
                 <ResultsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/client/provider/:id"
+            element={
+              <ProtectedRoute role="client">
+                <ProviderDetailPage />
+              </ProtectedRoute>
+        }
+      />
+
+          <Route
+            path="/client/booking/:id"
+            element={
+              <ProtectedRoute role="client">
+                <BookingPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/client/booking-confirmation"
+            element={
+              <ProtectedRoute role="client">
+                <BookingConfirmationPage />
               </ProtectedRoute>
             }
           />
