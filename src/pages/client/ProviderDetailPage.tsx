@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { ArrowLeft, MapPin, CheckCircle, Clock, Star, Languages, Calendar } from 'lucide-react';
 import type { Provider } from '../../types';
+import { cache, CACHE_KEYS } from '../../utils/cache';
 
 export default function ProviderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -15,7 +16,20 @@ export default function ProviderDetailPage() {
   }, [id]);
 
   const fetchProvider = async () => {
+    if (!id) return;
+
     try {
+      // Check cache first
+      const cacheKey = CACHE_KEYS.providerDetail(id);
+      const cachedData = cache.get<Provider>(cacheKey);
+
+      if (cachedData) {
+        setProvider(cachedData);
+        setLoading(false);
+        return;
+      }
+
+      // Cache miss - fetch from database
       setLoading(true);
       const { data, error } = await supabase
         .from('providers')
@@ -24,7 +38,11 @@ export default function ProviderDetailPage() {
         .single();
 
       if (error) throw error;
+
       setProvider(data);
+
+      // Cache for 5 minutes
+      cache.set(cacheKey, data, 5);
     } catch (error) {
       console.error('Error fetching provider:', error);
     } finally {
@@ -48,7 +66,7 @@ export default function ProviderDetailPage() {
           <p className="text-purple-700 mb-6">This care agency could not be found.</p>
           <button
             onClick={() => navigate('/client/search')}
-            className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
+            className="bg-purple-800 text-white px-6 py-3 rounded-lg hover:bg-purple-900 transition-colors"
           >
             Back to Search
           </button>
@@ -204,7 +222,7 @@ export default function ProviderDetailPage() {
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate(`/client/book/${provider.id}`)}
-            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-purple-800 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-purple-900 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             Request Booking

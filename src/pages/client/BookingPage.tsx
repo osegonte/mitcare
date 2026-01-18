@@ -240,7 +240,7 @@ export default function BookingPage() {
             </p>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit Button - FIXED */}
           <button
             type="submit"
             disabled={submitting}

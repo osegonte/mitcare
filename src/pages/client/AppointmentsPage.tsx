@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { ArrowLeft, Calendar, MapPin, Clock, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
 import type { Booking, Provider } from '../../types';
+import { LoadingSkeleton } from '../../components/shared/LoadingSkeleton';
 
 type BookingWithProvider = Booking & {
   provider: Provider;
@@ -136,14 +137,7 @@ export default function AppointmentsPage() {
   const filteredBookings = filterBookings(bookings);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300 mx-auto mb-4"></div>
-          <p className="text-purple-700">Loading appointments...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
 
   return (

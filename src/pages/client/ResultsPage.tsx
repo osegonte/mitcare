@@ -3,6 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { ArrowLeft, MapPin, Star, CheckCircle, Clock } from 'lucide-react';
 import type { Provider } from '../../types';
+import { cache, CACHE_KEYS } from '../../utils/cache';
+import { LoadingSkeleton } from '../../components/shared/LoadingSkeleton';
 
 export default function ResultsPage() {
   const navigate = useNavigate();
@@ -11,36 +13,52 @@ export default function ResultsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProviders = async () => {
-      try {
-        setLoading(true);
-        const location = searchParams.get('location');
-        const servicesParam = searchParams.get('services');
-        const services = servicesParam ? servicesParam.split(',') : [];
-
-        let query = supabase.from('providers').select('*');
-
-        if (location) {
-          query = query.contains('service_areas', [location]);
-        }
-
-        if (services.length > 0) {
-          query = query.overlaps('services_offered', services);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        setProviders(data || []);
-      } catch (error) {
-        console.error('Error fetching providers:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProviders();
   }, [searchParams]);
+
+  const fetchProviders = async () => {
+    try {
+      const location = searchParams.get('location') || '';
+      const servicesParam = searchParams.get('services') || '';
+      const services = servicesParam ? servicesParam.split(',') : [];
+
+      // Check cache first
+      const cacheKey = CACHE_KEYS.providerSearch(location, servicesParam);
+      const cachedData = cache.get<Provider[]>(cacheKey);
+
+      if (cachedData) {
+        setProviders(cachedData);
+        setLoading(false);
+        return;
+      }
+
+      // Cache miss - fetch from database
+      setLoading(true);
+      let query = supabase.from('providers').select('*');
+
+      if (location) {
+        query = query.contains('service_areas', [location]);
+      }
+
+      if (services.length > 0) {
+        query = query.overlaps('services_offered', services);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      const results = data || [];
+      setProviders(results);
+
+      // Cache the results for 5 minutes
+      cache.set(cacheKey, results, 5);
+    } catch (error) {
+      console.error('Error fetching providers:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const getPriceRange = (provider: Provider) => {
     const ranges = Object.values(provider.price_ranges || {});
@@ -56,14 +74,7 @@ export default function ResultsPage() {
   const location = searchParams.get('location');
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300 mx-auto mb-4"></div>
-          <p className="text-purple-700">Loading providers...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSkeleton />;
   }
 
   return (
@@ -100,7 +111,7 @@ export default function ResultsPage() {
             </p>
             <button
               onClick={() => navigate('/client/search')}
-              className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
+              className="bg-purple-800 text-white px-6 py-3 rounded-lg hover:bg-purple-900 transition-colors"
             >
               Back to Search
             </button>
