@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { ArrowLeft, MapPin, Star, CheckCircle, Clock } from 'lucide-react';
+import { ArrowLeft, MapPin, Star, CheckCircle, Clock, ChevronRight } from 'lucide-react';
 import type { Provider } from '../../types';
 import { cache, CACHE_KEYS } from '../../utils/cache';
 import { LoadingSkeleton } from '../../components/shared/LoadingSkeleton';
@@ -122,37 +122,37 @@ export default function ResultsPage() {
               <div
                 key={provider.id}
                 onClick={() => navigate(`/client/provider/${provider.id}`)}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all cursor-pointer active:scale-[0.99]"
+                className="bg-white border-2 border-gray-200 rounded-xl p-4 sm:p-6 hover:border-purple-800 hover:shadow-xl transition-all cursor-pointer active:scale-[0.99]"
               >
                 {/* Provider Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-bold text-purple-900">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
                         {provider.agency_name}
                       </h3>
                       {provider.verification_status === 'verified' && (
-                        <CheckCircle className="w-5 h-5 text-lavender-400" />
+                        <CheckCircle className="w-5 h-5 text-lavender-400 flex-shrink-0" />
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-purple-700 text-sm">
-                      <MapPin className="w-4 h-4" />
-                      <span>{provider.location}</span>
+                    <div className="flex items-center gap-2 text-purple-700 text-sm mb-2">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">{provider.location}</span>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-lg font-bold text-lavender-400">
+                  <div className="text-right flex-shrink-0">
+                    <div className="text-base sm:text-lg font-bold text-purple-800 whitespace-nowrap">
                       {getPriceRange(provider)}
                     </div>
-                    <div className="flex items-center gap-1 text-sm text-purple-500">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span>4.{Math.floor(Math.random() * 5) + 5}</span>
+                    <div className="flex items-center gap-1 text-sm text-purple-500 justify-end mt-1">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 flex-shrink-0" />
+                      <span className="font-semibold">4.{Math.floor(Math.random() * 5) + 5}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-purple-700 text-sm mb-4 line-clamp-2">
+                <p className="text-sm text-purple-700 mb-4 line-clamp-2 leading-relaxed">
                   {provider.description}
                 </p>
 
@@ -161,33 +161,36 @@ export default function ResultsPage() {
                   {provider.services_offered.slice(0, 3).map((service, idx) => (
                     <span
                       key={`${provider.id}-service-${idx}`}
-                      className="px-3 py-1 bg-lavender-200 text-lavender-400 rounded-full text-xs font-medium"
+                      className="px-3 py-1.5 bg-lavender-200 text-lavender-400 rounded-full text-xs font-medium"
                     >
                       {service}
                     </span>
                   ))}
                   {provider.services_offered.length > 3 && (
-                    <span className="px-3 py-1 bg-gray-100 text-purple-700 rounded-full text-xs font-medium">
+                    <span className="px-3 py-1.5 bg-gray-100 text-purple-700 rounded-full text-xs font-medium">
                       +{provider.services_offered.length - 3} more
                     </span>
                   )}
                 </div>
 
                 {/* Languages */}
-                <div className="flex items-center gap-2 text-sm text-purple-700 mb-3">
+                <div className="flex items-center gap-2 text-sm text-purple-700 mb-4">
                   <span className="font-medium">Languages:</span>
-                  <span>{provider.languages.join(', ')}</span>
+                  <span className="truncate">{provider.languages.join(', ')}</span>
                 </div>
 
                 {/* Footer Info */}
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-1 text-sm text-purple-500">
-                    <Clock className="w-4 h-4" />
-                    <span>{provider.response_time}</span>
+                  <div className="flex items-center gap-4 text-sm text-purple-500 flex-wrap">
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-4 h-4 flex-shrink-0" />
+                      <span className="whitespace-nowrap">{provider.response_time}</span>
+                    </div>
+                    <div className="whitespace-nowrap">
+                      {provider.completed_bookings} bookings
+                    </div>
                   </div>
-                  <div className="text-sm text-purple-500">
-                    {provider.completed_bookings} bookings completed
-                  </div>
+                  <ChevronRight className="w-5 h-5 text-purple-700 flex-shrink-0" />
                 </div>
               </div>
             ))}
