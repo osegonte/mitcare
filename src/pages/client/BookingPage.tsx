@@ -1,44 +1,68 @@
 // src/pages/client/BookingPage.tsx
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
-import { ArrowLeft, Calendar, MapPin, FileText, AlertCircle } from 'lucide-react';
-import type { Provider } from '../../types';
+import { ArrowLeft, Calendar, MapPin, FileText, AlertCircle, User } from 'lucide-react';
+import type { Provider, Caretaker } from '../../types';
 
 export default function BookingPage() {
   const { id } = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [provider, setProvider] = useState<Provider | null>(null);
+  const [caretakers, setCaretakers] = useState<Caretaker[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   // Form state
   const [selectedService, setSelectedService] = useState('');
+  const [selectedCaretakerId, setSelectedCaretakerId] = useState<string>('');
   const [dateTime, setDateTime] = useState('');
   const [address, setAddress] = useState('');
   const [notes, setNotes] = useState('');
 
   useEffect(() => {
-    fetchProvider();
+    fetchProviderData();
   }, [id]);
 
-  const fetchProvider = async () => {
+  const fetchProviderData = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      
+      // Fetch provider
+      const { data: providerData, error: providerError } = await supabase
         .from('providers')
         .select('*')
         .eq('id', id)
         .single();
 
-      if (error) throw error;
-      setProvider(data);
+      if (providerError) throw providerError;
+      setProvider(providerData);
+
       // Auto-select first service
-      if (data.services_offered.length > 0) {
-        setSelectedService(data.services_offered[0]);
+      if (providerData.services_offered.length > 0) {
+        setSelectedService(providerData.services_offered[0]);
+      }
+
+      // Fetch caretakers
+      const { data: caretakersData, error: caretakersError } = await supabase
+        .from('caretakers')
+        .select('*')
+        .eq('provider_id', id)
+        .eq('is_active', true)
+        .order('rating', { ascending: false });
+
+      if (!caretakersError && caretakersData) {
+        setCaretakers(caretakersData);
+        
+        // Check if caretaker was pre-selected from URL
+        const preSelectedCaretakerId = searchParams.get('caretaker');
+        if (preSelectedCaretakerId && caretakersData.find(c => c.id === preSelectedCaretakerId)) {
+          setSelectedCaretakerId(preSelectedCaretakerId);
+        }
       }
     } catch (error) {
       console.error('Error fetching provider:', error);
@@ -62,7 +86,7 @@ export default function BookingPage() {
       setSubmitting(true);
       setError('');
 
-      const { error: bookingError } = await supabase.from('bookings').insert({
+      const bookingData: any = {
         client_id: user.id,
         provider_id: provider.id,
         service_type: selectedService,
@@ -70,14 +94,25 @@ export default function BookingPage() {
         address: address,
         notes: notes || null,
         status: 'pending',
-      });
+      };
+
+      // Add caretaker_id if specific caretaker selected
+      if (selectedCaretakerId) {
+        bookingData.caretaker_id = selectedCaretakerId;
+      }
+
+      const { error: bookingError } = await supabase.from('bookings').insert(bookingData);
 
       if (bookingError) throw bookingError;
+
+      // Get selected caretaker name for confirmation
+      const selectedCaretaker = caretakers.find(c => c.id === selectedCaretakerId);
 
       // Success! Navigate to confirmation
       navigate('/client/booking-confirmation', { 
         state: { 
           providerName: provider.agency_name,
+          caretakerName: selectedCaretaker?.full_name,
           service: selectedService,
           dateTime: dateTime
         } 
@@ -124,6 +159,8 @@ export default function BookingPage() {
     );
   }
 
+  const selectedCaretaker = caretakers.find(c => c.id === selectedCaretakerId);
+
   return (
     <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
@@ -149,6 +186,57 @@ export default function BookingPage() {
             <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          {/* Caretaker Selection */}
+          {caretakers.length > 0 && (
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <label className="block mb-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <User className="w-5 h-5 text-lavender-400" />
+                  <span className="font-semibold text-purple-900">Select Caretaker</span>
+                  <span className="text-sm text-purple-500">(Optional)</span>
+                </div>
+                <p className="text-sm text-purple-700 mb-3">
+                  Choose a specific caretaker or leave blank to let the agency assign one.
+                </p>
+                <select
+                  value={selectedCaretakerId}
+                  onChange={(e) => setSelectedCaretakerId(e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
+                >
+                  <option value="">No preference (Agency will assign)</option>
+                  {caretakers.map((caretaker) => (
+                    <option key={caretaker.id} value={caretaker.id}>
+                      {caretaker.full_name} - €{caretaker.hourly_rate_min}–{caretaker.hourly_rate_max}/hr
+                      {caretaker.verified ? ' ✓ Verified' : ''}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              {/* Selected Caretaker Preview */}
+              {selectedCaretaker && (
+                <div className="mt-4 p-4 bg-lavender-50 border border-lavender-300 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-lavender-200 flex items-center justify-center flex-shrink-0">
+                      <span className="text-lg font-bold text-lavender-400">
+                        {selectedCaretaker.full_name.charAt(0)}
+                      </span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-purple-900">{selectedCaretaker.full_name}</p>
+                      <p className="text-sm text-purple-700">
+                        {selectedCaretaker.years_experience} years experience
+                      </p>
+                      <p className="text-xs text-purple-500">
+                        {selectedCaretaker.specializations.slice(0, 2).join(', ')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -240,7 +328,7 @@ export default function BookingPage() {
             </p>
           </div>
 
-          {/* Submit Button - FIXED */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={submitting}

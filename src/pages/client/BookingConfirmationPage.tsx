@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle, Calendar, Home, Search } from 'lucide-react';
+import { CheckCircle, Calendar, Home, Search, User } from 'lucide-react';
 
 export default function BookingConfirmationPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state as { providerName?: string; service?: string; dateTime?: string } | null;
+  const state = location.state as { 
+    providerName?: string; 
+    caretakerName?: string;
+    service?: string; 
+    dateTime?: string;
+  } | null;
 
   useEffect(() => {
     // If no state (direct navigation), redirect home
@@ -50,6 +55,15 @@ export default function BookingConfirmationPage() {
           <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left">
             <h3 className="font-semibold text-purple-900 mb-3">Booking Details</h3>
             <div className="space-y-2 text-sm">
+              {state.caretakerName && (
+                <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
+                  <User className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                  <div>
+                    <span className="text-purple-500">Caretaker:</span>
+                    <span className="ml-2 font-medium text-purple-900">{state.caretakerName}</span>
+                  </div>
+                </div>
+              )}
               <div>
                 <span className="text-purple-500">Service:</span>
                 <span className="ml-2 font-medium text-purple-900">{state.service}</span>
@@ -78,7 +92,7 @@ export default function BookingConfirmationPage() {
         <div className="space-y-3">
           <button
             onClick={() => navigate('/client/appointments')}
-            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-purple-800 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-purple-900 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             View My Appointments
