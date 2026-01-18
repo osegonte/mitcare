@@ -33,47 +33,33 @@ export default function ProviderDashboard() {
     if (!user) return;
 
     try {
-      setLoading(true);
+      // OPTIMIZED: Single query to get provider
+      const { data: providerData, error: providerError } = await supabase
+        .from('providers')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
 
-      // OPTIMIZED: Run queries in parallel using Promise.all
-      const [providerResult, bookingsResult] = await Promise.all([
-        supabase
-          .from('providers')
-          .select('*')
-          .eq('user_id', user.id)
-          .single(),
-        supabase
-          .from('providers')
-          .select('id')
-          .eq('user_id', user.id)
-          .single()
-          .then(async (result) => {
-            if (result.error || !result.data) return null;
-            
-            const bookingsData = await supabase
-              .from('bookings')
-              .select(`
-                *,
-                client:profiles!bookings_client_id_fkey(full_name, email)
-              `)
-              .eq('provider_id', result.data.id)
-              .order('created_at', { ascending: false });
-            
-            return bookingsData;
-          })
-      ]);
-
-      // Handle provider data
-      if (providerResult.error) {
-        console.log('No provider profile found');
+      if (providerError || !providerData) {
         setLoading(false);
         return;
       }
-      setProvider(providerResult.data);
 
-      // Handle bookings data
-      if (bookingsResult && !bookingsResult.error && bookingsResult.data) {
-        const bookingsWithClient = bookingsResult.data.map(booking => ({
+      setProvider(providerData);
+
+      // OPTIMIZED: Get bookings in one query
+      const { data: bookingsData, error: bookingsError } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          client:profiles!bookings_client_id_fkey(full_name, email)
+        `)
+        .eq('provider_id', providerData.id)
+        .order('created_at', { ascending: false })
+        .limit(50); // Limit to recent 50 bookings
+
+      if (!bookingsError && bookingsData) {
+        const bookingsWithClient = bookingsData.map(booking => ({
           ...booking,
           client: booking.client,
         }));
@@ -87,9 +73,10 @@ export default function ProviderDashboard() {
 
         setStats({ pending, accepted, completed });
       }
+
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
-    } finally {
       setLoading(false);
     }
   };
@@ -164,8 +151,21 @@ export default function ProviderDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300"></div>
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
+        <div className="bg-white shadow-sm animate-pulse">
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <div className="h-8 bg-gray-200 rounded w-48"></div>
+          </div>
+        </div>
+        <div className="max-w-4xl mx-auto px-4 py-8 space-y-4">
+          <div className="h-24 bg-white rounded-xl"></div>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="h-24 bg-white rounded-xl"></div>
+            <div className="h-24 bg-white rounded-xl"></div>
+            <div className="h-24 bg-white rounded-xl"></div>
+          </div>
+          <div className="h-32 bg-white rounded-xl"></div>
+        </div>
       </div>
     );
   }

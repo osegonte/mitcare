@@ -131,7 +131,11 @@ export default function SearchPage() {
                   setTimeout(() => setShowSuggestions(false), 200);
                 }}
                 placeholder="Type a city name..."
-                className="w-full px-4 py-3 pr-10 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
+                className={`w-full px-4 py-3 pr-10 border-2 rounded-xl focus:outline-none transition-colors ${
+                  location 
+                    ? 'border-purple-800 text-purple-900 font-medium' 
+                    : 'border-gray-200 focus:border-lavender-300'
+                }`}
               />
               
               {/* Clear button */}
@@ -169,16 +173,6 @@ export default function SearchPage() {
                 </div>
               )}
             </div>
-
-            {/* Selected location indicator */}
-            {location && (
-              <div className="mt-2 flex items-center gap-2 text-sm text-green-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <span>Selected: {location}</span>
-              </div>
-            )}
           </label>
         </div>
 
