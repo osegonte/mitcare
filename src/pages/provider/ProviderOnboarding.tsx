@@ -150,20 +150,20 @@ export default function ProviderOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-900">Provider Setup</h1>
-            <div className="text-sm text-gray-600">
+            <h1 className="text-xl font-bold text-purple-900">Provider Setup</h1>
+            <div className="text-sm text-purple-700">
               Step {step} of 5
             </div>
           </div>
           {/* Progress Bar */}
           <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-teal-600 transition-all duration-300"
+              className="h-full bg-lavender-50 transition-all duration-300"
               style={{ width: `${(step / 5) * 100}%` }}
             ></div>
           </div>
@@ -184,18 +184,18 @@ export default function ProviderOnboarding() {
           {step === 1 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Building2 className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-lavender-200 rounded-full flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-lavender-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Agency Information</h2>
-                  <p className="text-gray-600">Tell us about your care agency</p>
+                  <h2 className="text-2xl font-bold text-purple-900">Agency Information</h2>
+                  <p className="text-purple-700">Tell us about your care agency</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label className="block text-sm font-semibold text-purple-900 mb-2">
                     Agency Name *
                   </label>
                   <input
@@ -203,12 +203,12 @@ export default function ProviderOnboarding() {
                     value={formData.agency_name}
                     onChange={(e) => setFormData({ ...formData, agency_name: e.target.value })}
                     placeholder="e.g., Berlin Care Services"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label className="block text-sm font-semibold text-purple-900 mb-2">
                     Description *
                   </label>
                   <textarea
@@ -216,18 +216,18 @@ export default function ProviderOnboarding() {
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Describe your agency and what makes you special..."
                     rows={4}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none resize-none"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label className="block text-sm font-semibold text-purple-900 mb-2">
                     Main Location *
                   </label>
                   <select
                     value={formData.location}
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
                   >
                     <option value="">Select a city...</option>
                     {CITIES.map(city => (
@@ -237,7 +237,7 @@ export default function ProviderOnboarding() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label className="block text-sm font-semibold text-purple-900 mb-2">
                     Years of Experience (Optional)
                   </label>
                   <input
@@ -247,7 +247,7 @@ export default function ProviderOnboarding() {
                     placeholder="e.g., 5"
                     min="0"
                     max="50"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
                   />
                 </div>
               </div>
@@ -258,12 +258,12 @@ export default function ProviderOnboarding() {
           {step === 2 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-lavender-200 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-lavender-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Services Offered</h2>
-                  <p className="text-gray-600">What services do you provide?</p>
+                  <h2 className="text-2xl font-bold text-purple-900">Services Offered</h2>
+                  <p className="text-purple-700">What services do you provide?</p>
                 </div>
               </div>
 
@@ -274,14 +274,14 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleService(service)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.services_offered.includes(service)
-                        ? 'border-teal-600 bg-teal-50'
+                        ? 'border-lavender-300 bg-lavender-200'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">{service}</span>
+                      <span className="font-medium text-purple-900">{service}</span>
                       {formData.services_offered.includes(service) && (
-                        <CheckCircle className="w-5 h-5 text-teal-600" />
+                        <CheckCircle className="w-5 h-5 text-lavender-400" />
                       )}
                     </div>
                   </button>
@@ -294,12 +294,12 @@ export default function ProviderOnboarding() {
           {step === 3 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Calendar className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-lavender-200 rounded-full flex items-center justify-center">
+                  <Calendar className="w-6 h-6 text-lavender-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Service Areas</h2>
-                  <p className="text-gray-600">Where do you provide services?</p>
+                  <h2 className="text-2xl font-bold text-purple-900">Service Areas</h2>
+                  <p className="text-purple-700">Where do you provide services?</p>
                 </div>
               </div>
 
@@ -310,14 +310,14 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleArea(area)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.service_areas.includes(area)
-                        ? 'border-teal-600 bg-teal-50'
+                        ? 'border-lavender-300 bg-lavender-200'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">{area}</span>
+                      <span className="font-medium text-purple-900">{area}</span>
                       {formData.service_areas.includes(area) && (
-                        <CheckCircle className="w-5 h-5 text-teal-600" />
+                        <CheckCircle className="w-5 h-5 text-lavender-400" />
                       )}
                     </div>
                   </button>
@@ -330,12 +330,12 @@ export default function ProviderOnboarding() {
           {step === 4 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Languages className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-lavender-200 rounded-full flex items-center justify-center">
+                  <Languages className="w-6 h-6 text-lavender-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Languages</h2>
-                  <p className="text-gray-600">What languages do you speak?</p>
+                  <h2 className="text-2xl font-bold text-purple-900">Languages</h2>
+                  <p className="text-purple-700">What languages do you speak?</p>
                 </div>
               </div>
 
@@ -346,14 +346,14 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleLanguage(language)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.languages.includes(language)
-                        ? 'border-teal-600 bg-teal-50'
+                        ? 'border-lavender-300 bg-lavender-200'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">{language}</span>
+                      <span className="font-medium text-purple-900">{language}</span>
                       {formData.languages.includes(language) && (
-                        <CheckCircle className="w-5 h-5 text-teal-600" />
+                        <CheckCircle className="w-5 h-5 text-lavender-400" />
                       )}
                     </div>
                   </button>
@@ -366,31 +366,31 @@ export default function ProviderOnboarding() {
           {step === 5 && (
             <div>
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-teal-600" />
+                <div className="w-12 h-12 bg-lavender-200 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-6 h-6 text-lavender-400" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Review & Submit</h2>
-                  <p className="text-gray-600">Make sure everything looks good</p>
+                  <h2 className="text-2xl font-bold text-purple-900">Review & Submit</h2>
+                  <p className="text-purple-700">Make sure everything looks good</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 mb-1">Agency Name</p>
-                  <p className="font-semibold text-gray-900">{formData.agency_name}</p>
+                  <p className="text-sm text-purple-500 mb-1">Agency Name</p>
+                  <p className="font-semibold text-purple-900">{formData.agency_name}</p>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 mb-1">Location</p>
-                  <p className="font-semibold text-gray-900">{formData.location}</p>
+                  <p className="text-sm text-purple-500 mb-1">Location</p>
+                  <p className="font-semibold text-purple-900">{formData.location}</p>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 mb-2">Services</p>
+                  <p className="text-sm text-purple-500 mb-2">Services</p>
                   <div className="flex flex-wrap gap-2">
                     {formData.services_offered.map(service => (
-                      <span key={service} className="px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                      <span key={service} className="px-3 py-1 bg-lavender-200 text-lavender-400 rounded-full text-sm font-medium">
                         {service}
                       </span>
                     ))}
@@ -398,7 +398,7 @@ export default function ProviderOnboarding() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 mb-2">Service Areas</p>
+                  <p className="text-sm text-purple-500 mb-2">Service Areas</p>
                   <div className="flex flex-wrap gap-2">
                     {formData.service_areas.map(area => (
                       <span key={area} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
@@ -409,11 +409,11 @@ export default function ProviderOnboarding() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm text-gray-500 mb-2">Languages</p>
-                  <p className="font-semibold text-gray-900">{formData.languages.join(', ')}</p>
+                  <p className="text-sm text-purple-500 mb-2">Languages</p>
+                  <p className="font-semibold text-purple-900">{formData.languages.join(', ')}</p>
                 </div>
 
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <div className="p-4 bg-lavender-50 border border-blue-200 rounded-xl">
                   <p className="text-sm text-blue-800">
                     <strong>Note:</strong> Your profile will be set to "pending verification". 
                     Default pricing (€15-35/hr) and availability (Mon-Fri, 9AM-5PM) have been set. 
@@ -440,7 +440,7 @@ export default function ProviderOnboarding() {
             {step < 5 ? (
               <button
                 onClick={handleNext}
-                className="flex-1 flex items-center justify-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition-all"
+                className="flex-1 flex items-center justify-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-xl hover:bg-lavender-50 transition-all"
               >
                 Next
                 <ArrowRight className="w-5 h-5" />
@@ -449,7 +449,7 @@ export default function ProviderOnboarding() {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex-1 flex items-center justify-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-xl hover:bg-teal-700 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-xl hover:bg-lavender-50 transition-all disabled:opacity-50"
               >
                 {submitting ? (
                   <>

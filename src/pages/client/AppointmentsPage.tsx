@@ -134,29 +134,29 @@ export default function AppointmentsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading appointments...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300 mx-auto mb-4"></div>
+          <p className="text-purple-700">Loading appointments...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate('/client/home')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-2"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900 mb-2"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Home</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">My Appointments</h1>
-          <p className="text-sm text-gray-600">{bookings.length} total bookings</p>
+          <h1 className="text-2xl font-bold text-purple-900">My Appointments</h1>
+          <p className="text-sm text-purple-700">{bookings.length} total bookings</p>
         </div>
       </header>
 
@@ -168,8 +168,8 @@ export default function AppointmentsPage() {
             onClick={() => setActiveTab('upcoming')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'upcoming'
-                ? 'bg-teal-600 text-white'
-                : 'text-gray-600 hover:bg-gray-50'
+                ? 'bg-lavender-50 text-white'
+                : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
             Upcoming ({filterBookings(bookings).filter(b => new Date(b.date_time) >= new Date()).length})
@@ -178,8 +178,8 @@ export default function AppointmentsPage() {
             onClick={() => setActiveTab('past')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'past'
-                ? 'bg-teal-600 text-white'
-                : 'text-gray-600 hover:bg-gray-50'
+                ? 'bg-lavender-50 text-white'
+                : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
             Past ({filterBookings(bookings).filter(b => new Date(b.date_time) < new Date()).length})
@@ -190,10 +190,10 @@ export default function AppointmentsPage() {
         {filteredBookings.length === 0 ? (
           <div className="bg-white rounded-2xl p-8 text-center shadow">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-purple-900 mb-2">
               No {activeTab} appointments
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-purple-700 mb-6">
               {activeTab === 'upcoming'
                 ? 'You don\'t have any upcoming appointments yet.'
                 : 'No past appointments found.'}
@@ -201,7 +201,7 @@ export default function AppointmentsPage() {
             {activeTab === 'upcoming' && (
               <button
                 onClick={() => navigate('/client/search')}
-                className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors"
+                className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
               >
                 Book Care Now
               </button>
@@ -221,10 +221,10 @@ export default function AppointmentsPage() {
                   {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">
+                      <h3 className="text-xl font-bold text-purple-900 mb-1">
                         {booking.provider.agency_name}
                       </h3>
-                      <p className="text-gray-600">{booking.service_type}</p>
+                      <p className="text-purple-700">{booking.service_type}</p>
                     </div>
                     {getStatusBadge(booking.status)}
                   </div>
@@ -232,17 +232,17 @@ export default function AppointmentsPage() {
                   {/* Date & Time */}
                   <div className="grid grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-teal-600" />
+                      <Calendar className="w-5 h-5 text-lavender-400" />
                       <div>
-                        <p className="text-xs text-gray-500">Date</p>
-                        <p className="font-semibold text-gray-900">{date}</p>
+                        <p className="text-xs text-purple-500">Date</p>
+                        <p className="font-semibold text-purple-900">{date}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-teal-600" />
+                      <Clock className="w-5 h-5 text-lavender-400" />
                       <div>
-                        <p className="text-xs text-gray-500">Time</p>
-                        <p className="font-semibold text-gray-900">{time}</p>
+                        <p className="text-xs text-purple-500">Time</p>
+                        <p className="font-semibold text-purple-900">{time}</p>
                       </div>
                     </div>
                   </div>
@@ -251,16 +251,16 @@ export default function AppointmentsPage() {
                   <div className="flex items-start gap-2 mb-4">
                     <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
-                      <p className="text-xs text-gray-500">Service Address</p>
-                      <p className="text-gray-900">{booking.address}</p>
+                      <p className="text-xs text-purple-500">Service Address</p>
+                      <p className="text-purple-900">{booking.address}</p>
                     </div>
                   </div>
 
                   {/* Notes */}
                   {booking.notes && (
-                    <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-gray-500 mb-1">Notes</p>
-                      <p className="text-sm text-gray-900">{booking.notes}</p>
+                    <div className="mb-4 p-3 bg-lavender-50 rounded-lg">
+                      <p className="text-xs text-purple-500 mb-1">Notes</p>
+                      <p className="text-sm text-purple-900">{booking.notes}</p>
                     </div>
                   )}
 

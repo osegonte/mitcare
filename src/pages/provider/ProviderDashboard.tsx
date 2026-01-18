@@ -131,16 +131,16 @@ export default function ProviderDashboard() {
   // If no provider profile exists, show onboarding message
   if (!loading && !provider) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" fill="currentColor" />
               </div>
-              <h1 className="text-xl font-bold text-gray-900">MitCare Provider</h1>
+              <h1 className="text-xl font-bold text-purple-900">MitCare Provider</h1>
             </div>
-            <button onClick={signOut} className="text-sm text-gray-600 hover:text-gray-900">
+            <button onClick={signOut} className="text-sm text-purple-700 hover:text-purple-900">
               Sign Out
             </button>
           </div>
@@ -148,18 +148,18 @@ export default function ProviderDashboard() {
 
         <main className="max-w-4xl mx-auto px-4 py-16">
           <div className="bg-white rounded-2xl p-8 shadow-xl text-center">
-            <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="w-8 h-8 text-teal-600" />
+            <div className="w-16 h-16 bg-lavender-200 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-8 h-8 text-lavender-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl font-bold text-purple-900 mb-3">
               Complete Your Provider Profile
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-purple-700 mb-6">
               To start receiving booking requests, you need to set up your agency profile first.
             </p>
             <button
               onClick={() => navigate('/provider/onboarding')}
-              className="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-colors"
+              className="bg-lavender-50 text-white px-8 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
             >
               Set Up Profile
             </button>
@@ -171,8 +171,8 @@ export default function ProviderDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300"></div>
       </div>
     );
   }
@@ -180,20 +180,20 @@ export default function ProviderDashboard() {
   const pendingBookings = bookings.filter(b => b.status === 'pending').slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" fill="currentColor" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">MitCare Provider</h1>
-              <p className="text-xs text-gray-600">{provider?.agency_name}</p>
+              <h1 className="text-xl font-bold text-purple-900">MitCare Provider</h1>
+              <p className="text-xs text-purple-700">{provider?.agency_name}</p>
             </div>
           </div>
-          <button onClick={signOut} className="text-sm text-gray-600 hover:text-gray-900">
+          <button onClick={signOut} className="text-sm text-purple-700 hover:text-purple-900">
             Sign Out
           </button>
         </div>
@@ -203,10 +203,10 @@ export default function ProviderDashboard() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-purple-900 mb-2">
             Welcome back, {user?.full_name?.split(' ')[0] || 'there'}!
           </h2>
-          <p className="text-gray-600">Manage your bookings and grow your business.</p>
+          <p className="text-purple-700">Manage your bookings and grow your business.</p>
         </div>
 
         {/* Stats Grid */}
@@ -217,8 +217,8 @@ export default function ProviderDashboard() {
                 <Clock className="w-5 h-5 text-yellow-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.pending}</p>
-                <p className="text-sm text-gray-600">Pending</p>
+                <p className="text-2xl font-bold text-purple-900">{stats.pending}</p>
+                <p className="text-sm text-purple-700">Pending</p>
               </div>
             </div>
           </div>
@@ -229,8 +229,8 @@ export default function ProviderDashboard() {
                 <CheckCircle className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.accepted}</p>
-                <p className="text-sm text-gray-600">Accepted</p>
+                <p className="text-2xl font-bold text-purple-900">{stats.accepted}</p>
+                <p className="text-sm text-purple-700">Accepted</p>
               </div>
             </div>
           </div>
@@ -241,8 +241,8 @@ export default function ProviderDashboard() {
                 <CheckCircle className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
-                <p className="text-sm text-gray-600">Completed</p>
+                <p className="text-2xl font-bold text-purple-900">{stats.completed}</p>
+                <p className="text-sm text-purple-700">Completed</p>
               </div>
             </div>
           </div>
@@ -252,33 +252,33 @@ export default function ProviderDashboard() {
         <div className="grid grid-cols-2 gap-4 mb-8">
           <button
             onClick={() => navigate('/provider/bookings')}
-            className="bg-teal-600 text-white rounded-xl p-6 shadow-lg hover:bg-teal-700 transition-all text-left"
+            className="bg-lavender-50 text-white rounded-xl p-6 shadow-lg hover:bg-lavender-50 transition-all text-left"
           >
             <Calendar className="w-8 h-8 mb-3" />
             <h3 className="text-lg font-semibold mb-1">All Bookings</h3>
-            <p className="text-teal-100 text-sm">View and manage all requests</p>
+            <p className="text-lavender-200 text-sm">View and manage all requests</p>
           </button>
 
           <button
             onClick={() => navigate('/provider/profile')}
             className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-left"
           >
-            <CheckCircle className="w-8 h-8 text-teal-600 mb-3" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-1">My Profile</h3>
-            <p className="text-gray-600 text-sm">Update your information</p>
+            <CheckCircle className="w-8 h-8 text-lavender-400 mb-3" />
+            <h3 className="text-lg font-semibold text-purple-900 mb-1">My Profile</h3>
+            <p className="text-purple-700 text-sm">Update your information</p>
           </button>
         </div>
 
         {/* Recent Pending Requests */}
         <div className="bg-white rounded-2xl p-6 shadow-lg">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-purple-900">
               Pending Requests ({stats.pending})
             </h3>
             {stats.pending > 5 && (
               <button
                 onClick={() => navigate('/provider/bookings')}
-                className="text-sm text-teal-600 hover:text-teal-700"
+                className="text-sm text-lavender-400 hover:text-lavender-400"
               >
                 View All
               </button>
@@ -288,7 +288,7 @@ export default function ProviderDashboard() {
           {pendingBookings.length === 0 ? (
             <div className="text-center py-8">
               <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600">No pending requests</p>
+              <p className="text-purple-700">No pending requests</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -296,16 +296,16 @@ export default function ProviderDashboard() {
                 <div
                   key={booking.id}
                   onClick={() => navigate('/provider/bookings')}
-                  className="p-4 border-2 border-gray-200 rounded-xl hover:border-teal-600 transition-all cursor-pointer"
+                  className="p-4 border-2 border-gray-200 rounded-xl hover:border-lavender-300 transition-all cursor-pointer"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-semibold text-gray-900">{booking.client.full_name}</p>
-                      <p className="text-sm text-gray-600">{booking.service_type}</p>
+                      <p className="font-semibold text-purple-900">{booking.client.full_name}</p>
+                      <p className="text-sm text-purple-700">{booking.service_type}</p>
                     </div>
                     {getStatusBadge(booking.status)}
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <div className="flex items-center gap-4 text-sm text-purple-700">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       <span>{formatDateTime(booking.date_time)}</span>

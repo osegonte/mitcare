@@ -34,19 +34,19 @@ export default function ClientHome() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" fill="currentColor" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900">MitCare</h1>
+            <h1 className="text-xl font-bold text-purple-900">MitCare</h1>
           </div>
           <button
             onClick={signOut}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm text-purple-700 hover:text-purple-900"
           >
             Sign Out
           </button>
@@ -57,25 +57,25 @@ export default function ClientHome() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-purple-900 mb-2">
             Welcome back, {user?.full_name?.split(' ')[0] || 'there'}!
           </h2>
-          <p className="text-gray-600">Find the care you need, when you need it.</p>
+          <p className="text-purple-700">Find the care you need, when you need it.</p>
         </div>
 
         {/* Primary CTA */}
         <button
           onClick={() => navigate('/client/search')}
-          className="w-full bg-teal-600 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl hover:bg-teal-700 transition-all duration-200 active:scale-[0.98] mb-6"
+          className="w-full bg-lavender-50 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl hover:bg-lavender-50 transition-all duration-200 active:scale-[0.98] mb-6"
         >
           <div className="flex items-center justify-between">
             <div className="text-left flex-1">
               <h3 className="text-xl font-semibold mb-2">Book Care Now</h3>
-              <p className="text-teal-100 text-sm">
+              <p className="text-lavender-200 text-sm">
                 Search verified agencies in your area
               </p>
             </div>
-            <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-lavender-2000 rounded-full flex items-center justify-center">
               <Search className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -87,9 +87,9 @@ export default function ClientHome() {
             onClick={() => navigate('/client/appointments')}
             className="bg-white rounded-xl p-5 shadow hover:shadow-md transition-all text-left"
           >
-            <Calendar className="w-8 h-8 text-teal-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Appointments</h3>
-            <p className="text-sm text-gray-500">
+            <Calendar className="w-8 h-8 text-lavender-400 mb-3" />
+            <h3 className="font-semibold text-purple-900 mb-1">Appointments</h3>
+            <p className="text-sm text-purple-500">
               {loadingCount ? (
                 'Loading...'
               ) : bookingCount > 0 ? (
@@ -101,24 +101,24 @@ export default function ClientHome() {
           </button>
 
           <button className="bg-white rounded-xl p-5 shadow hover:shadow-md transition-all text-left">
-            <Bookmark className="w-8 h-8 text-teal-600 mb-3" />
-            <h3 className="font-semibold text-gray-900 mb-1">Saved</h3>
-            <p className="text-sm text-gray-500">0 providers</p>
+            <Bookmark className="w-8 h-8 text-lavender-400 mb-3" />
+            <h3 className="font-semibold text-purple-900 mb-1">Saved</h3>
+            <p className="text-sm text-purple-500">0 providers</p>
           </button>
         </div>
 
         {/* Empty State */}
         <div className="bg-white rounded-2xl p-8 text-center shadow">
           <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-purple-900 mb-2">
             Ready to get started?
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-purple-700 mb-4">
             Book your first care service and we'll guide you through the process.
           </p>
           <button
             onClick={() => navigate('/client/search')}
-            className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors"
+            className="inline-flex items-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
           >
             <Search className="w-5 h-5" />
             Find Care

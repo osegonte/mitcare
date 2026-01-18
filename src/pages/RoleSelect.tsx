@@ -40,22 +40,22 @@ export default function RoleSelect() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex flex-col">
       {/* Header */}
       <header className="pt-8 pb-4 px-4 sm:px-6">
         <div className="max-w-md mx-auto">
           <button
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-6"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900 transition-colors mb-6"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </button>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-10 h-10 bg-teal-600 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-lavender-50 rounded-full flex items-center justify-center">
               <Heart className="w-6 h-6 text-white" fill="currentColor" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">MitCare</h1>
+            <h1 className="text-2xl font-bold text-purple-900">MitCare</h1>
           </div>
         </div>
       </header>
@@ -65,10 +65,10 @@ export default function RoleSelect() {
         <div className="max-w-md w-full">
           {/* Headline */}
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl font-bold text-purple-900 mb-2">
               {roleText[role].title}
             </h2>
-            <p className="text-gray-600">{roleText[role].subtitle}</p>
+            <p className="text-purple-700">{roleText[role].subtitle}</p>
           </div>
 
           {/* Sign In Card */}
@@ -107,7 +107,7 @@ export default function RoleSelect() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-purple-900">
                     Continue with Google
                   </span>
                 </>
@@ -115,7 +115,7 @@ export default function RoleSelect() {
             </button>
 
             {/* Privacy Note */}
-            <p className="text-xs text-gray-500 text-center mt-6">
+            <p className="text-xs text-purple-500 text-center mt-6">
               By continuing, you agree to MitCare's Terms of Service and Privacy Policy
             </p>
           </div>

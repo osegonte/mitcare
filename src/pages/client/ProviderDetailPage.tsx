@@ -34,21 +34,21 @@ export default function ProviderDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300"></div>
       </div>
     );
   }
 
   if (!provider) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Agency Not Found</h2>
-          <p className="text-gray-600 mb-6">This care agency could not be found.</p>
+          <h2 className="text-xl font-semibold text-purple-900 mb-2">Agency Not Found</h2>
+          <p className="text-purple-700 mb-6">This care agency could not be found.</p>
           <button
             onClick={() => navigate('/client/search')}
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors"
+            className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
           >
             Back to Search
           </button>
@@ -58,13 +58,13 @@ export default function ProviderDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
@@ -79,18 +79,18 @@ export default function ProviderDetailPage() {
           <div className="flex items-start justify-between mb-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-purple-900">
                   {provider.agency_name}
                 </h1>
                 {provider.verification_status === 'verified' && (
-                  <CheckCircle className="w-6 h-6 text-teal-600" />
+                  <CheckCircle className="w-6 h-6 text-lavender-400" />
                 )}
               </div>
-              <div className="flex items-center gap-2 text-gray-600 mb-2">
+              <div className="flex items-center gap-2 text-purple-700 mb-2">
                 <MapPin className="w-4 h-4" />
                 <span>{provider.location}</span>
               </div>
-              <div className="flex items-center gap-1 text-sm text-gray-500">
+              <div className="flex items-center gap-1 text-sm text-purple-500">
                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 <span className="font-semibold">4.{Math.floor(Math.random() * 5) + 5}</span>
                 <span className="text-gray-400 ml-1">({provider.completed_bookings} bookings)</span>
@@ -101,11 +101,11 @@ export default function ProviderDetailPage() {
           {/* Trust Signals */}
           <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-100">
             <div className="flex items-center gap-2 text-sm">
-              <Clock className="w-4 h-4 text-teal-600" />
-              <span className="text-gray-600">{provider.response_time}</span>
+              <Clock className="w-4 h-4 text-lavender-400" />
+              <span className="text-purple-700">{provider.response_time}</span>
             </div>
             {provider.years_experience && (
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-purple-700">
                 <span className="font-semibold">{provider.years_experience}</span> years experience
               </div>
             )}
@@ -114,13 +114,13 @@ export default function ProviderDetailPage() {
 
         {/* About Section */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-3">About</h2>
-          <p className="text-gray-600 leading-relaxed">{provider.description}</p>
+          <h2 className="text-lg font-semibold text-purple-900 mb-3">About</h2>
+          <p className="text-purple-700 leading-relaxed">{provider.description}</p>
         </div>
 
         {/* Services & Pricing */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Services & Pricing</h2>
+          <h2 className="text-lg font-semibold text-purple-900 mb-4">Services & Pricing</h2>
           <div className="space-y-3">
             {provider.services_offered.map((service) => {
               const priceRange = provider.price_ranges[service];
@@ -129,9 +129,9 @@ export default function ProviderDetailPage() {
                   key={service}
                   className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
                 >
-                  <span className="font-medium text-gray-900">{service}</span>
+                  <span className="font-medium text-purple-900">{service}</span>
                   {priceRange && (
-                    <span className="text-teal-600 font-semibold">
+                    <span className="text-lavender-400 font-semibold">
                       €{priceRange.min}–{priceRange.max}/hr
                     </span>
                   )}
@@ -144,14 +144,14 @@ export default function ProviderDetailPage() {
         {/* Languages */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <Languages className="w-5 h-5 text-teal-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Languages Spoken</h2>
+            <Languages className="w-5 h-5 text-lavender-400" />
+            <h2 className="text-lg font-semibold text-purple-900">Languages Spoken</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {provider.languages.map((language) => (
               <span
                 key={language}
-                className="px-4 py-2 bg-teal-50 text-teal-700 rounded-full font-medium"
+                className="px-4 py-2 bg-lavender-200 text-lavender-400 rounded-full font-medium"
               >
                 {language}
               </span>
@@ -162,8 +162,8 @@ export default function ProviderDetailPage() {
         {/* Service Areas */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-5 h-5 text-teal-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Service Areas</h2>
+            <MapPin className="w-5 h-5 text-lavender-400" />
+            <h2 className="text-lg font-semibold text-purple-900">Service Areas</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {provider.service_areas.map((area) => (
@@ -180,8 +180,8 @@ export default function ProviderDetailPage() {
         {/* Availability */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
           <div className="flex items-center gap-2 mb-3">
-            <Calendar className="w-5 h-5 text-teal-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Availability</h2>
+            <Calendar className="w-5 h-5 text-lavender-400" />
+            <h2 className="text-lg font-semibold text-purple-900">Availability</h2>
           </div>
           <div className="space-y-2">
             {Object.entries(provider.availability).map(([day, hours]) => (
@@ -189,8 +189,8 @@ export default function ProviderDetailPage() {
                 key={day}
                 className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
               >
-                <span className="font-medium text-gray-900 capitalize">{day}</span>
-                <span className="text-gray-600 text-sm">
+                <span className="font-medium text-purple-900 capitalize">{day}</span>
+                <span className="text-purple-700 text-sm">
                   {Array.isArray(hours) ? hours.join(', ') : 'Closed'}
                 </span>
               </div>
@@ -204,7 +204,7 @@ export default function ProviderDetailPage() {
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate(`/client/book/${provider.id}`)}
-            className="w-full bg-teal-600 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-teal-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             Request Booking

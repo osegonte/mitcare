@@ -190,29 +190,29 @@ export default function ProviderBookingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading bookings...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300 mx-auto mb-4"></div>
+          <p className="text-purple-700">Loading bookings...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate('/provider/dashboard')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-2"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900 mb-2"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Dashboard</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Booking Requests</h1>
-          <p className="text-sm text-gray-600">{bookings.length} total bookings</p>
+          <h1 className="text-2xl font-bold text-purple-900">Booking Requests</h1>
+          <p className="text-sm text-purple-700">{bookings.length} total bookings</p>
         </div>
       </header>
 
@@ -225,7 +225,7 @@ export default function ProviderBookingsPage() {
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'pending'
                 ? 'bg-yellow-600 text-white'
-                : 'text-gray-600 hover:bg-gray-50'
+                : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
             Pending ({bookings.filter(b => b.status === 'pending').length})
@@ -235,7 +235,7 @@ export default function ProviderBookingsPage() {
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'accepted'
                 ? 'bg-green-600 text-white'
-                : 'text-gray-600 hover:bg-gray-50'
+                : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
             Accepted ({bookings.filter(b => b.status === 'accepted').length})
@@ -244,8 +244,8 @@ export default function ProviderBookingsPage() {
             onClick={() => setActiveTab('all')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'all'
-                ? 'bg-teal-600 text-white'
-                : 'text-gray-600 hover:bg-gray-50'
+                ? 'bg-lavender-50 text-white'
+                : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
             All ({bookings.length})
@@ -256,10 +256,10 @@ export default function ProviderBookingsPage() {
         {filteredBookings.length === 0 ? (
           <div className="bg-white rounded-2xl p-8 text-center shadow">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            <h3 className="text-lg font-semibold text-purple-900 mb-2">
               No {activeTab} bookings
             </h3>
-            <p className="text-gray-600">
+            <p className="text-purple-700">
               {activeTab === 'pending'
                 ? 'No pending requests at the moment.'
                 : activeTab === 'accepted'
@@ -285,11 +285,11 @@ export default function ProviderBookingsPage() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <User className="w-5 h-5 text-gray-400" />
-                        <h3 className="text-xl font-bold text-gray-900">
+                        <h3 className="text-xl font-bold text-purple-900">
                           {booking.client.full_name}
                         </h3>
                       </div>
-                      <p className="text-gray-600">{booking.service_type}</p>
+                      <p className="text-purple-700">{booking.service_type}</p>
                     </div>
                     {getStatusBadge(booking.status)}
                   </div>
@@ -297,17 +297,17 @@ export default function ProviderBookingsPage() {
                   {/* Date & Time */}
                   <div className="grid grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-teal-600" />
+                      <Calendar className="w-5 h-5 text-lavender-400" />
                       <div>
-                        <p className="text-xs text-gray-500">Date</p>
-                        <p className="font-semibold text-gray-900">{date}</p>
+                        <p className="text-xs text-purple-500">Date</p>
+                        <p className="font-semibold text-purple-900">{date}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-teal-600" />
+                      <Clock className="w-5 h-5 text-lavender-400" />
                       <div>
-                        <p className="text-xs text-gray-500">Time</p>
-                        <p className="font-semibold text-gray-900">{time}</p>
+                        <p className="text-xs text-purple-500">Time</p>
+                        <p className="font-semibold text-purple-900">{time}</p>
                       </div>
                     </div>
                   </div>
@@ -316,26 +316,26 @@ export default function ProviderBookingsPage() {
                   <div className="flex items-start gap-2 mb-4">
                     <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
-                      <p className="text-xs text-gray-500">Service Address</p>
-                      <p className="text-gray-900">{booking.address}</p>
+                      <p className="text-xs text-purple-500">Service Address</p>
+                      <p className="text-purple-900">{booking.address}</p>
                     </div>
                   </div>
 
                   {/* Notes */}
                   {booking.notes && (
-                    <div className="mb-4 p-3 bg-blue-50 rounded-lg flex items-start gap-2">
+                    <div className="mb-4 p-3 bg-lavender-50 rounded-lg flex items-start gap-2">
                       <FileText className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-xs text-gray-500 mb-1">Client Notes</p>
-                        <p className="text-sm text-gray-900">{booking.notes}</p>
+                        <p className="text-xs text-purple-500 mb-1">Client Notes</p>
+                        <p className="text-sm text-purple-900">{booking.notes}</p>
                       </div>
                     </div>
                   )}
 
                   {/* Contact */}
                   <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                    <p className="text-xs text-gray-500 mb-1">Contact</p>
-                    <p className="text-sm text-gray-900">{booking.client.email}</p>
+                    <p className="text-xs text-purple-500 mb-1">Contact</p>
+                    <p className="text-sm text-purple-900">{booking.client.email}</p>
                   </div>
 
                   {/* Actions */}

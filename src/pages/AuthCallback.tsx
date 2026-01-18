@@ -35,7 +35,7 @@ export default function AuthCallback() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
@@ -52,19 +52,19 @@ export default function AuthCallback() {
               />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Authentication Failed</h2>
-          <p className="text-gray-600">{error}</p>
-          <p className="text-sm text-gray-500 mt-4">Redirecting...</p>
+          <h2 className="text-xl font-semibold text-purple-900 mb-2">Authentication Failed</h2>
+          <p className="text-purple-700">{error}</p>
+          <p className="text-sm text-purple-500 mt-4">Redirecting...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Completing sign in...</p>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300 mx-auto mb-4"></div>
+        <p className="text-purple-700">Completing sign in...</p>
       </div>
     </div>
   );

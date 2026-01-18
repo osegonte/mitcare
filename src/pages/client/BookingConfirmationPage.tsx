@@ -29,39 +29,39 @@ export default function BookingConfirmationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         {/* Success Icon */}
         <div className="bg-white rounded-2xl p-8 shadow-xl text-center mb-6">
-          <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-12 h-12 text-teal-600" />
+          <div className="w-20 h-20 bg-lavender-200 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle className="w-12 h-12 text-lavender-400" />
           </div>
           
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">
+          <h1 className="text-2xl font-bold text-purple-900 mb-3">
             Booking Request Sent!
           </h1>
           
-          <p className="text-gray-600 mb-6">
+          <p className="text-purple-700 mb-6">
             Your booking request has been sent to <strong>{state.providerName}</strong>. 
             They will review your request and contact you shortly.
           </p>
 
           {/* Booking Summary */}
           <div className="bg-gray-50 rounded-xl p-4 mb-6 text-left">
-            <h3 className="font-semibold text-gray-900 mb-3">Booking Details</h3>
+            <h3 className="font-semibold text-purple-900 mb-3">Booking Details</h3>
             <div className="space-y-2 text-sm">
               <div>
-                <span className="text-gray-500">Service:</span>
-                <span className="ml-2 font-medium text-gray-900">{state.service}</span>
+                <span className="text-purple-500">Service:</span>
+                <span className="ml-2 font-medium text-purple-900">{state.service}</span>
               </div>
               <div>
-                <span className="text-gray-500">Date & Time:</span>
-                <span className="ml-2 font-medium text-gray-900">
+                <span className="text-purple-500">Date & Time:</span>
+                <span className="ml-2 font-medium text-purple-900">
                   {formatDateTime(state.dateTime || '')}
                 </span>
               </div>
               <div>
-                <span className="text-gray-500">Status:</span>
+                <span className="text-purple-500">Status:</span>
                 <span className="ml-2 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
                   Pending
                 </span>
@@ -69,7 +69,7 @@ export default function BookingConfirmationPage() {
             </div>
           </div>
 
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-purple-500 mb-6">
             You can view and manage your bookings in your appointments page.
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function BookingConfirmationPage() {
         <div className="space-y-3">
           <button
             onClick={() => navigate('/client/appointments')}
-            className="w-full bg-teal-600 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-teal-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             <Calendar className="w-5 h-5" />
             View My Appointments

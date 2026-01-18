@@ -45,18 +45,18 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate('/client/home')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-2"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900 mb-2"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Find Care</h1>
+          <h1 className="text-2xl font-bold text-purple-900">Find Care</h1>
         </div>
       </header>
 
@@ -66,13 +66,13 @@ export default function SearchPage() {
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
           <label className="block mb-3">
             <div className="flex items-center gap-2 mb-2">
-              <MapPin className="w-5 h-5 text-teal-600" />
-              <span className="font-semibold text-gray-900">Location</span>
+              <MapPin className="w-5 h-5 text-lavender-400" />
+              <span className="font-semibold text-purple-900">Location</span>
             </div>
             <select
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
             >
               <option value="">Select a city...</option>
               {CITIES.map((city) => (
@@ -86,7 +86,7 @@ export default function SearchPage() {
 
         {/* Service Type Selection */}
         <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <h3 className="font-semibold text-gray-900 mb-4">
+          <h3 className="font-semibold text-purple-900 mb-4">
             What type of care do you need?
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -96,14 +96,14 @@ export default function SearchPage() {
                 onClick={() => toggleService(service)}
                 className={`p-4 rounded-xl border-2 text-left transition-all ${
                   selectedServices.includes(service)
-                    ? 'border-teal-600 bg-teal-50'
+                    ? 'border-lavender-300 bg-lavender-200'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-medium text-gray-900">{service}</span>
+                  <span className="font-medium text-purple-900">{service}</span>
                   {selectedServices.includes(service) && (
-                    <div className="w-6 h-6 bg-teal-600 rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 bg-lavender-50 rounded-full flex items-center justify-center">
                       <svg
                         className="w-4 h-4 text-white"
                         fill="none"
@@ -129,14 +129,14 @@ export default function SearchPage() {
         <button
           onClick={handleSearch}
           disabled={!location}
-          className="w-full bg-teal-600 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+          className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
         >
           <Search className="w-5 h-5" />
           Search Agencies
         </button>
 
         {!location && (
-          <p className="text-center text-sm text-gray-500 mt-4">
+          <p className="text-center text-sm text-purple-500 mt-4">
             Please select a location to search
           </p>
         )}

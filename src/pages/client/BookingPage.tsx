@@ -101,20 +101,20 @@ export default function BookingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lavender-300"></div>
       </div>
     );
   }
 
   if (!provider) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl p-8 shadow-xl max-w-md w-full text-center">
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Agency Not Found</h2>
+          <h2 className="text-xl font-semibold text-purple-900 mb-2">Agency Not Found</h2>
           <button
             onClick={() => navigate('/client/search')}
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition-colors mt-4"
+            className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors mt-4"
           >
             Back to Search
           </button>
@@ -124,19 +124,19 @@ export default function BookingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-2"
+            className="flex items-center gap-2 text-purple-700 hover:text-purple-900 mb-2"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Request Booking</h1>
-          <p className="text-sm text-gray-600">{provider.agency_name}</p>
+          <h1 className="text-2xl font-bold text-purple-900">Request Booking</h1>
+          <p className="text-sm text-purple-700">{provider.agency_name}</p>
         </div>
       </header>
 
@@ -155,14 +155,14 @@ export default function BookingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-lg">
             <label className="block mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-teal-600" />
-                <span className="font-semibold text-gray-900">Service Type *</span>
+                <FileText className="w-5 h-5 text-lavender-400" />
+                <span className="font-semibold text-purple-900">Service Type *</span>
               </div>
               <select
                 value={selectedService}
                 onChange={(e) => setSelectedService(e.target.value)}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
               >
                 {provider.services_offered.map((service) => {
                   const priceRange = provider.price_ranges[service];
@@ -181,8 +181,8 @@ export default function BookingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-lg">
             <label className="block mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="w-5 h-5 text-teal-600" />
-                <span className="font-semibold text-gray-900">Date & Time *</span>
+                <Calendar className="w-5 h-5 text-lavender-400" />
+                <span className="font-semibold text-purple-900">Date & Time *</span>
               </div>
               <input
                 type="datetime-local"
@@ -190,7 +190,7 @@ export default function BookingPage() {
                 onChange={(e) => setDateTime(e.target.value)}
                 min={getMinDate()}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none"
               />
             </label>
           </div>
@@ -199,8 +199,8 @@ export default function BookingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-lg">
             <label className="block mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <MapPin className="w-5 h-5 text-teal-600" />
-                <span className="font-semibold text-gray-900">Service Address *</span>
+                <MapPin className="w-5 h-5 text-lavender-400" />
+                <span className="font-semibold text-purple-900">Service Address *</span>
               </div>
               <textarea
                 value={address}
@@ -208,7 +208,7 @@ export default function BookingPage() {
                 required
                 rows={3}
                 placeholder="Enter the full address where care is needed"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none resize-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none resize-none"
               />
             </label>
           </div>
@@ -217,22 +217,22 @@ export default function BookingPage() {
           <div className="bg-white rounded-2xl p-6 shadow-lg">
             <label className="block mb-3">
               <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-teal-600" />
-                <span className="font-semibold text-gray-900">Additional Notes</span>
-                <span className="text-sm text-gray-500">(Optional)</span>
+                <FileText className="w-5 h-5 text-lavender-400" />
+                <span className="font-semibold text-purple-900">Additional Notes</span>
+                <span className="text-sm text-purple-500">(Optional)</span>
               </div>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={4}
                 placeholder="Any special requirements or information the agency should know..."
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-teal-600 focus:outline-none resize-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-lavender-300 focus:outline-none resize-none"
               />
             </label>
           </div>
 
           {/* Payment Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="bg-lavender-50 border border-blue-200 rounded-xl p-4">
             <p className="text-sm text-blue-800">
               <strong>Payment:</strong> Payment will be handled directly with the agency. 
               They will contact you to confirm details and discuss payment options.
@@ -243,7 +243,7 @@ export default function BookingPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-teal-600 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>
