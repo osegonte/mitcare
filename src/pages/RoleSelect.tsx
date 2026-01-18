@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Heart, ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Shield } from 'lucide-react';
 
 export default function RoleSelect() {
   const location = useLocation();
@@ -32,50 +32,65 @@ export default function RoleSelect() {
     client: {
       title: 'Find Care',
       subtitle: 'Sign in to find verified care agencies',
+      description: 'Access our network of trusted care providers',
     },
     provider: {
       title: 'Provide Care',
       subtitle: 'Sign in to connect with families',
+      description: 'Manage bookings and grow your care business',
     },
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br bg-lavender-50 flex flex-col">
-      {/* Header */}
-      <header className="pt-8 pb-4 px-4 sm:px-6">
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header with Logo */}
+      <header className="bg-white border-b border-gray-200 py-6 px-4 sm:px-6">
         <div className="max-w-md mx-auto">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 text-purple-700 hover:text-purple-900 transition-colors mb-6"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Back</span>
+            <span className="font-medium">Back</span>
           </button>
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-10 h-10 bg-lavender-50 rounded-full flex items-center justify-center">
-              <Heart className="w-6 h-6 text-white" fill="currentColor" />
-            </div>
-            <h1 className="text-2xl font-bold text-purple-900">MitCare</h1>
+          <div className="flex items-center justify-center gap-3">
+            <img src="/logo.png" alt="MitCare" className="w-12 h-12" />
+            <h1 className="text-3xl font-bold text-purple-900">MitCare</h1>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 pb-16">
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
         <div className="max-w-md w-full">
-          {/* Headline */}
+          {/* Role Title Section */}
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-purple-900 mb-2">
               {roleText[role].title}
             </h2>
-            <p className="text-purple-700">{roleText[role].subtitle}</p>
+            <p className="text-lg text-purple-700 mb-1">{roleText[role].subtitle}</p>
+            <p className="text-sm text-purple-500">{roleText[role].description}</p>
           </div>
 
-          {/* Sign In Card */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl">
+          {/* Clear Section Divider */}
+          <div className="mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t-2 border-gray-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-white text-purple-700 font-semibold">
+                  Secure Login
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sign In Card with Clear Border */}
+          <div className="bg-white border-2 border-gray-300 rounded-2xl p-8 shadow-sm">
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">{error}</p>
+              <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                <p className="text-sm text-red-600 font-medium">{error}</p>
               </div>
             )}
 
@@ -83,13 +98,13 @@ export default function RoleSelect() {
             <button
               onClick={handleGoogleSignIn}
               disabled={loading}
-              className="w-full bg-white border-2 border-gray-200 rounded-xl p-4 hover:border-gray-300 hover:shadow-md transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              className="w-full bg-white border-2 border-purple-800 rounded-xl p-4 hover:bg-purple-50 transition-all duration-200 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-800"></div>
               ) : (
                 <>
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6" viewBox="0 0 24 24">
                     <path
                       fill="#4285F4"
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -107,16 +122,26 @@ export default function RoleSelect() {
                       d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                   </svg>
-                  <span className="font-medium text-purple-900">
+                  <span className="font-semibold text-purple-900 text-lg">
                     Continue with Google
                   </span>
                 </>
               )}
             </button>
 
-            {/* Privacy Note */}
-            <p className="text-xs text-purple-500 text-center mt-6">
-              By continuing, you agree to MitCare's Terms of Service and Privacy Policy
+            {/* Security Badge */}
+            <div className="mt-6 flex items-center justify-center gap-2 text-sm text-purple-500">
+              <Shield className="w-4 h-4" />
+              <span>Secure authentication via Google</span>
+            </div>
+          </div>
+
+          {/* Privacy Notice */}
+          <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+            <p className="text-xs text-center text-purple-700">
+              By continuing, you agree to MitCare's{' '}
+              <span className="font-semibold">Terms of Service</span> and{' '}
+              <span className="font-semibold">Privacy Policy</span>
             </p>
           </div>
         </div>

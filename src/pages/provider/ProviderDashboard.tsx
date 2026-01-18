@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { Heart, Calendar, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import type { Booking } from '../../types';
 
 type BookingWithClient = Booking & {
@@ -115,9 +115,7 @@ export default function ProviderDashboard() {
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" fill="currentColor" />
-              </div>
+              <img src="/logo.png" alt="MitCare" className="w-8 h-8" />
               <h1 className="text-xl font-bold text-purple-900">MitCare Provider</h1>
             </div>
             <button onClick={signOut} className="text-sm text-purple-700 hover:text-purple-900">
@@ -178,9 +176,7 @@ export default function ProviderDashboard() {
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center">
-              <Heart className="w-5 h-5 text-white" fill="currentColor" />
-            </div>
+            <img src="/logo.png" alt="MitCare" className="w-8 h-8" />
             <div>
               <h1 className="text-xl font-bold text-purple-900">MitCare Provider</h1>
               <p className="text-xs text-purple-700">{provider?.agency_name}</p>
