@@ -1,3 +1,4 @@
+// src/pages/client/AppointmentsPage.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
@@ -26,6 +27,8 @@ export default function AppointmentsPage() {
 
     try {
       setLoading(true);
+      
+      // OPTIMIZED: Single query to get all data at once
       const { data, error } = await supabase
         .from('bookings')
         .select(`
@@ -168,7 +171,7 @@ export default function AppointmentsPage() {
             onClick={() => setActiveTab('upcoming')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'upcoming'
-                ? 'bg-lavender-50 text-white'
+                ? 'bg-purple-800 text-white'
                 : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
@@ -178,7 +181,7 @@ export default function AppointmentsPage() {
             onClick={() => setActiveTab('past')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'past'
-                ? 'bg-lavender-50 text-white'
+                ? 'bg-purple-800 text-white'
                 : 'text-purple-700 hover:bg-gray-50'
             }`}
           >
@@ -201,7 +204,7 @@ export default function AppointmentsPage() {
             {activeTab === 'upcoming' && (
               <button
                 onClick={() => navigate('/client/search')}
-                className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
+                className="bg-purple-800 text-white px-6 py-3 rounded-lg hover:bg-purple-900 transition-colors"
               >
                 Book Care Now
               </button>

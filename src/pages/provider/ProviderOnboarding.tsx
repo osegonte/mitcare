@@ -1,3 +1,4 @@
+// src/pages/provider/ProviderOnboarding.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -162,7 +163,7 @@ export default function ProviderOnboarding() {
           {/* Progress Bar */}
           <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-lavender-50 transition-all duration-300"
+              className="h-full bg-purple-800 transition-all duration-300"
               style={{ width: `${(step / 5) * 100}%` }}
             ></div>
           </div>
@@ -273,7 +274,7 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleService(service)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.services_offered.includes(service)
-                        ? 'border-lavender-300 bg-lavender-200'
+                        ? 'border-lavender-300 bg-lavender-200 shadow-soft'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -309,7 +310,7 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleArea(area)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.service_areas.includes(area)
-                        ? 'border-lavender-300 bg-lavender-200'
+                        ? 'border-lavender-300 bg-lavender-200 shadow-soft'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -345,7 +346,7 @@ export default function ProviderOnboarding() {
                     onClick={() => toggleLanguage(language)}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       formData.languages.includes(language)
-                        ? 'border-lavender-300 bg-lavender-200'
+                        ? 'border-lavender-300 bg-lavender-200 shadow-soft'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -439,7 +440,7 @@ export default function ProviderOnboarding() {
             {step < 5 ? (
               <button
                 onClick={handleNext}
-                className="flex-1 flex items-center justify-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-xl hover:bg-lavender-50 transition-all"
+                className="flex-1 flex items-center justify-center gap-2 bg-purple-800 text-white px-6 py-3 rounded-xl hover:bg-purple-900 transition-all"
               >
                 Next
                 <ArrowRight className="w-5 h-5" />
@@ -448,7 +449,7 @@ export default function ProviderOnboarding() {
               <button
                 onClick={handleSubmit}
                 disabled={submitting}
-                className="flex-1 flex items-center justify-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-xl hover:bg-lavender-50 transition-all disabled:opacity-50"
+                className="flex-1 flex items-center justify-center gap-2 bg-purple-800 text-white px-6 py-3 rounded-xl hover:bg-purple-900 transition-all disabled:opacity-50"
               >
                 {submitting ? (
                   <>

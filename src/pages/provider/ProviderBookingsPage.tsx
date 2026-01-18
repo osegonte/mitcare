@@ -1,3 +1,4 @@
+// src/pages/provider/ProviderBookingsPage.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -244,7 +245,7 @@ export default function ProviderBookingsPage() {
             onClick={() => setActiveTab('all')}
             className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
               activeTab === 'all'
-                ? 'bg-lavender-50 text-white'
+                ? 'bg-purple-800 text-white'
                 : 'text-purple-700 hover:bg-gray-50'
             }`}
           >

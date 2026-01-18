@@ -1,3 +1,4 @@
+// src/pages/provider/ProviderDashboard.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,77 +26,69 @@ export default function ProviderDashboard() {
   });
 
   useEffect(() => {
-    fetchProviderData();
-    fetchBookings();
+    fetchData();
   }, [user]);
 
-  const fetchProviderData = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('providers')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error) {
-        // Provider profile doesn't exist yet
-        console.log('No provider profile found');
-        return;
-      }
-
-      setProvider(data);
-    } catch (error) {
-      console.error('Error fetching provider:', error);
-    }
-  };
-
-  const fetchBookings = async () => {
+  const fetchData = async () => {
     if (!user) return;
 
     try {
       setLoading(true);
 
-      // First get provider ID
-      const { data: providerData } = await supabase
-        .from('providers')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
+      // OPTIMIZED: Run queries in parallel using Promise.all
+      const [providerResult, bookingsResult] = await Promise.all([
+        supabase
+          .from('providers')
+          .select('*')
+          .eq('user_id', user.id)
+          .single(),
+        supabase
+          .from('providers')
+          .select('id')
+          .eq('user_id', user.id)
+          .single()
+          .then(async (result) => {
+            if (result.error || !result.data) return null;
+            
+            const bookingsData = await supabase
+              .from('bookings')
+              .select(`
+                *,
+                client:profiles!bookings_client_id_fkey(full_name, email)
+              `)
+              .eq('provider_id', result.data.id)
+              .order('created_at', { ascending: false });
+            
+            return bookingsData;
+          })
+      ]);
 
-      if (!providerData) {
+      // Handle provider data
+      if (providerResult.error) {
+        console.log('No provider profile found');
         setLoading(false);
         return;
       }
+      setProvider(providerResult.data);
 
-      // Then get bookings
-      const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-          *,
-          client:profiles!bookings_client_id_fkey(full_name, email)
-        `)
-        .eq('provider_id', providerData.id)
-        .order('created_at', { ascending: false });
+      // Handle bookings data
+      if (bookingsResult && !bookingsResult.error && bookingsResult.data) {
+        const bookingsWithClient = bookingsResult.data.map(booking => ({
+          ...booking,
+          client: booking.client,
+        }));
 
-      if (error) throw error;
+        setBookings(bookingsWithClient);
 
-      const bookingsWithClient = data.map(booking => ({
-        ...booking,
-        client: booking.client,
-      }));
+        // Calculate stats
+        const pending = bookingsWithClient.filter(b => b.status === 'pending').length;
+        const accepted = bookingsWithClient.filter(b => b.status === 'accepted').length;
+        const completed = bookingsWithClient.filter(b => b.status === 'completed').length;
 
-      setBookings(bookingsWithClient);
-
-      // Calculate stats
-      const pending = bookingsWithClient.filter(b => b.status === 'pending').length;
-      const accepted = bookingsWithClient.filter(b => b.status === 'accepted').length;
-      const completed = bookingsWithClient.filter(b => b.status === 'completed').length;
-
-      setStats({ pending, accepted, completed });
+        setStats({ pending, accepted, completed });
+      }
     } catch (error) {
-      console.error('Error fetching bookings:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
@@ -135,7 +128,7 @@ export default function ProviderDashboard() {
         <header className="bg-white shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" fill="currentColor" />
               </div>
               <h1 className="text-xl font-bold text-purple-900">MitCare Provider</h1>
@@ -159,7 +152,7 @@ export default function ProviderDashboard() {
             </p>
             <button
               onClick={() => navigate('/provider/onboarding')}
-              className="bg-lavender-50 text-white px-8 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
+              className="bg-purple-800 text-white px-8 py-3 rounded-lg hover:bg-purple-900 transition-colors"
             >
               Set Up Profile
             </button>
@@ -185,7 +178,7 @@ export default function ProviderDashboard() {
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" fill="currentColor" />
             </div>
             <div>
@@ -252,11 +245,11 @@ export default function ProviderDashboard() {
         <div className="grid grid-cols-2 gap-4 mb-8">
           <button
             onClick={() => navigate('/provider/bookings')}
-            className="bg-lavender-50 text-white rounded-xl p-6 shadow-lg hover:bg-lavender-50 transition-all text-left"
+            className="bg-purple-800 text-white rounded-xl p-6 shadow-lg hover:bg-purple-900 transition-all text-left"
           >
             <Calendar className="w-8 h-8 mb-3" />
             <h3 className="text-lg font-semibold mb-1">All Bookings</h3>
-            <p className="text-lavender-200 text-sm">View and manage all requests</p>
+            <p className="text-purple-200 text-sm">View and manage all requests</p>
           </button>
 
           <button

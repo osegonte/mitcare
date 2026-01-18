@@ -1,3 +1,4 @@
+// src/contexts/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import type { User, UserRole } from '../types';
@@ -18,28 +19,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let mounted = true;
     
-    // OPTIMIZED: Reduced timeout from 5000ms to 2000ms
     const timeout = setTimeout(() => {
-      console.log('⏰ TIMEOUT: Forcing loading to false');
       if (mounted) setLoading(false);
-    }, 2000);
+    }, 500);
 
     const initAuth = async () => {
       try {
-        console.log('🔐 Initializing auth...');
-        
-        // OPTIMIZED: Try to load from cache first for instant UI
+        // Try to load from cache first for instant UI
         const cachedUser = localStorage.getItem('mitcare_cached_user');
         if (cachedUser) {
           try {
             const userData = JSON.parse(cachedUser);
-            console.log('⚡ Loaded user from cache:', userData.email);
             if (mounted) {
               setUser(userData);
               setLoading(false);
             }
           } catch (e) {
-            console.log('Cache invalid, fetching fresh data');
             localStorage.removeItem('mitcare_cached_user');
           }
         }
@@ -47,15 +42,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error('❌ Session error:', sessionError);
           if (mounted) setLoading(false);
           clearTimeout(timeout);
           return;
         }
 
-        // OPTIMIZED: Early exit if no session
+        // Early exit if no session
         if (!session?.user) {
-          console.log('🚫 No session found');
           localStorage.removeItem('mitcare_cached_user');
           if (mounted) {
             setUser(null);
@@ -65,7 +58,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        console.log('👤 Session found for:', session.user.email);
         const { data, error } = await supabase
           .from('profiles')
           .select('*')
@@ -73,15 +65,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .single();
 
         if (error) {
-          console.log('⚠️ No profile found:', error.message);
           localStorage.removeItem('mitcare_cached_user');
           if (mounted) setLoading(false);
           clearTimeout(timeout);
           return;
         }
 
-        console.log('✅ Profile loaded:', data.email, 'Role:', data.role);
-        
         const userData: User = {
           id: data.id,
           email: data.email,
@@ -94,13 +83,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (mounted) {
           setUser(userData);
           setLoading(false);
-          // OPTIMIZED: Cache user data for next visit
           localStorage.setItem('mitcare_cached_user', JSON.stringify(userData));
         }
         
         clearTimeout(timeout);
       } catch (error) {
-        console.error('💥 Init auth error:', error);
         if (mounted) setLoading(false);
         clearTimeout(timeout);
       }
@@ -109,9 +96,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔄 Auth state changed:', event);
-      
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data } = await supabase
           .from('profiles')
@@ -130,14 +115,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           };
           setUser(userData);
           setLoading(false);
-          // OPTIMIZED: Update cache
           localStorage.setItem('mitcare_cached_user', JSON.stringify(userData));
         }
       } else {
         if (mounted) {
           setUser(null);
           setLoading(false);
-          // OPTIMIZED: Clear cache on logout
           localStorage.removeItem('mitcare_cached_user');
         }
       }
@@ -167,11 +150,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     setUser(null);
-    // OPTIMIZED: Clear cache on sign out
     localStorage.removeItem('mitcare_cached_user');
   };
-
-  console.log('🎯 AuthContext render - Loading:', loading, 'User:', user?.email || 'none');
 
   return (
     <AuthContext.Provider value={{ user, loading, signInWithGoogle, signOut }}>

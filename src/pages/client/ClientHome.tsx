@@ -1,3 +1,4 @@
+// src/pages/client/ClientHome.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -39,7 +40,7 @@ export default function ClientHome() {
       <header className="bg-white shadow-sm">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-lavender-50 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-purple-800 rounded-full flex items-center justify-center">
               <Heart className="w-5 h-5 text-white" fill="currentColor" />
             </div>
             <h1 className="text-xl font-bold text-purple-900">MitCare</h1>
@@ -66,16 +67,16 @@ export default function ClientHome() {
         {/* Primary CTA */}
         <button
           onClick={() => navigate('/client/search')}
-          className="w-full bg-lavender-50 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl hover:bg-lavender-50 transition-all duration-200 active:scale-[0.98] mb-6"
+          className="w-full bg-purple-800 text-white rounded-2xl p-6 shadow-lg hover:shadow-xl hover:bg-purple-900 transition-all duration-200 active:scale-[0.98] mb-6"
         >
           <div className="flex items-center justify-between">
             <div className="text-left flex-1">
               <h3 className="text-xl font-semibold mb-2">Book Care Now</h3>
-              <p className="text-lavender-200 text-sm">
+              <p className="text-purple-200 text-sm">
                 Search verified agencies in your area
               </p>
             </div>
-            <div className="w-12 h-12 bg-lavender-2000 rounded-full flex items-center justify-center">
+            <div className="w-12 h-12 bg-purple-900 rounded-full flex items-center justify-center">
               <Search className="w-6 h-6 text-white" />
             </div>
           </div>
@@ -118,7 +119,7 @@ export default function ClientHome() {
           </p>
           <button
             onClick={() => navigate('/client/search')}
-            className="inline-flex items-center gap-2 bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors"
+            className="inline-flex items-center gap-2 bg-purple-800 text-white px-6 py-3 rounded-lg hover:bg-purple-900 transition-colors"
           >
             <Search className="w-5 h-5" />
             Find Care

@@ -1,5 +1,7 @@
+// src/App.tsx
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ErrorBoundary } from './components/shared/ErrorBoundary';
 import Welcome from './pages/Welcome';
 import AuthCallback from './pages/AuthCallback';
 import RoleSelect from './pages/RoleSelect';
@@ -17,111 +19,113 @@ import ProviderOnboarding from './pages/provider/ProviderOnboarding';
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Welcome />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/auth/role-select" element={<RoleSelect />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Welcome />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/auth/role-select" element={<RoleSelect />} />
 
-          {/* Protected client routes */}
-          <Route
-            path="/client/home"
-            element={
-              <ProtectedRoute role="client">
-                <ClientHome />
-              </ProtectedRoute>
-            }
-          />
-          
-          <Route
-            path="/client/search"
-            element={
-              <ProtectedRoute role="client">
-                <SearchPage />
-              </ProtectedRoute>
-            }
-          />
-          
-          <Route
-            path="/client/results"
-            element={
-              <ProtectedRoute role="client">
-                <ResultsPage />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected client routes */}
+            <Route
+              path="/client/home"
+              element={
+                <ProtectedRoute role="client">
+                  <ClientHome />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/client/search"
+              element={
+                <ProtectedRoute role="client">
+                  <SearchPage />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route
+              path="/client/results"
+              element={
+                <ProtectedRoute role="client">
+                  <ResultsPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/client/provider/:id"
-            element={
-              <ProtectedRoute role="client">
-                <ProviderDetailPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/client/provider/:id"
+              element={
+                <ProtectedRoute role="client">
+                  <ProviderDetailPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/client/book/:id"
-            element={
-              <ProtectedRoute role="client">
-                <BookingPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/client/book/:id"
+              element={
+                <ProtectedRoute role="client">
+                  <BookingPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/client/booking-confirmation"
-            element={
-              <ProtectedRoute role="client">
-                <BookingConfirmationPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/client/booking-confirmation"
+              element={
+                <ProtectedRoute role="client">
+                  <BookingConfirmationPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/client/appointments"
-            element={
-              <ProtectedRoute role="client">
-                <AppointmentsPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/client/appointments"
+              element={
+                <ProtectedRoute role="client">
+                  <AppointmentsPage />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Protected provider routes */}
-          <Route
-            path="/provider/dashboard"
-            element={
-              <ProtectedRoute role="provider">
-                <ProviderDashboard />
-              </ProtectedRoute>
-            }
-          />
+            {/* Protected provider routes */}
+            <Route
+              path="/provider/dashboard"
+              element={
+                <ProtectedRoute role="provider">
+                  <ProviderDashboard />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/provider/bookings"
-            element={
-              <ProtectedRoute role="provider">
-                <ProviderBookingsPage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/provider/bookings"
+              element={
+                <ProtectedRoute role="provider">
+                  <ProviderBookingsPage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/provider/onboarding"
-            element={
-              <ProtectedRoute role="provider">
-                <ProviderOnboarding />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/provider/onboarding"
+              element={
+                <ProtectedRoute role="provider">
+                  <ProviderOnboarding />
+                </ProtectedRoute>
+              }
+            />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

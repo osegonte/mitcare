@@ -1,3 +1,4 @@
+// tailwind.config.js
 export default {
   theme: {
     extend: {
@@ -13,6 +14,7 @@ export default {
         // Text Colors
         purple: {
           900: '#3A2F45',  // Primary text
+          800: '#4A3D55',  // Deep purple for CTAs
           700: '#6B5E75',  // Secondary text
           500: '#9A8FA6',  // Muted text
         },

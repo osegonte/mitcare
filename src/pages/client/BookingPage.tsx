@@ -1,3 +1,4 @@
+// src/pages/client/BookingPage.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
@@ -114,7 +115,7 @@ export default function BookingPage() {
           <h2 className="text-xl font-semibold text-purple-900 mb-2">Agency Not Found</h2>
           <button
             onClick={() => navigate('/client/search')}
-            className="bg-lavender-50 text-white px-6 py-3 rounded-lg hover:bg-lavender-50 transition-colors mt-4"
+            className="bg-purple-800 text-white px-6 py-3 rounded-lg hover:bg-purple-900 transition-colors mt-4"
           >
             Back to Search
           </button>
@@ -243,7 +244,7 @@ export default function BookingPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-lavender-50 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-lavender-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full bg-purple-800 text-white rounded-xl py-4 font-semibold shadow-lg hover:bg-purple-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98] flex items-center justify-center gap-2"
           >
             {submitting ? (
               <>
