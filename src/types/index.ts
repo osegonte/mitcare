@@ -27,10 +27,36 @@ export interface Provider {
   created_at: string;
 }
 
+export interface Caretaker {
+  id: string;
+  provider_id: string;
+  full_name: string;
+  photo_url?: string;
+  bio?: string;
+  date_of_birth?: string;
+  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+  languages: string[];
+  specializations: string[];
+  certifications?: string[];
+  years_experience: number;
+  hourly_rate_min: number;
+  hourly_rate_max: number;
+  available_for_live_in: boolean;
+  available_for_overnight: boolean;
+  rating: number;
+  total_reviews: number;
+  completed_bookings: number;
+  is_active: boolean;
+  verified: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Booking {
   id: string;
   client_id: string;
   provider_id: string;
+  caretaker_id?: string; // NEW: Optional specific caretaker
   service_type: string;
   date_time: string;
   address: string;
@@ -45,4 +71,18 @@ export interface SavedProvider {
   client_id: string;
   provider_id: string;
   created_at: string;
+}
+
+// NEW: Extended types for join queries
+export interface ProviderWithCaretakers extends Provider {
+  caretakers: Caretaker[];
+}
+
+export interface BookingWithDetails extends Booking {
+  provider: Provider;
+  caretaker?: Caretaker;
+  client?: {
+    full_name: string;
+    email: string;
+  };
 }

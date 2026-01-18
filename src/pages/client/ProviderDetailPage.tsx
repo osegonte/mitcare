@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { ArrowLeft, MapPin, CheckCircle, Clock, Star, Languages, Calendar } from 'lucide-react';
-import type { Provider } from '../../types';
+import { ArrowLeft, MapPin, CheckCircle, Clock, Star, Languages, Calendar, Users } from 'lucide-react';
+import type { Provider, Caretaker } from '../../types';
 import { cache, CACHE_KEYS } from '../../utils/cache';
+import { CaretakerCard } from '../../components/CaretakerCard';
 
 export default function ProviderDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [provider, setProvider] = useState<Provider | null>(null);
+  const [caretakers, setCaretakers] = useState<Caretaker[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'overview' | 'caretakers'>('caretakers');
 
   useEffect(() => {
-    fetchProvider();
+    fetchProviderData();
   }, [id]);
 
-  const fetchProvider = async () => {
+  const fetchProviderData = async () => {
     if (!id) return;
 
     try {
@@ -25,26 +28,33 @@ export default function ProviderDetailPage() {
 
       if (cachedData) {
         setProvider(cachedData);
-        setLoading(false);
-        return;
+      } else {
+        // Fetch provider
+        const { data: providerData, error: providerError } = await supabase
+          .from('providers')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (providerError) throw providerError;
+
+        setProvider(providerData);
+        cache.set(cacheKey, providerData, 5);
       }
 
-      // Cache miss - fetch from database
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('providers')
+      // Fetch caretakers (always fresh)
+      const { data: caretakersData, error: caretakersError } = await supabase
+        .from('caretakers')
         .select('*')
-        .eq('id', id)
-        .single();
+        .eq('provider_id', id)
+        .eq('is_active', true)
+        .order('rating', { ascending: false });
 
-      if (error) throw error;
-
-      setProvider(data);
-
-      // Cache for 5 minutes
-      cache.set(cacheKey, data, 5);
+      if (!caretakersError && caretakersData) {
+        setCaretakers(caretakersData);
+      }
     } catch (error) {
-      console.error('Error fetching provider:', error);
+      console.error('Error fetching provider data:', error);
     } finally {
       setLoading(false);
     }
@@ -130,91 +140,147 @@ export default function ProviderDetailPage() {
           </div>
         </div>
 
-        {/* About Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <h2 className="text-lg font-semibold text-purple-900 mb-3">About</h2>
-          <p className="text-purple-700 leading-relaxed">{provider.description}</p>
+        {/* Tabs */}
+        <div className="bg-white rounded-2xl p-2 shadow-lg mb-6 flex gap-2">
+          <button
+            onClick={() => setActiveTab('caretakers')}
+            className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+              activeTab === 'caretakers'
+                ? 'bg-purple-800 text-white'
+                : 'text-purple-700 hover:bg-gray-50'
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            Our Caretakers ({caretakers.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${
+              activeTab === 'overview'
+                ? 'bg-purple-800 text-white'
+                : 'text-purple-700 hover:bg-gray-50'
+            }`}
+          >
+            Agency Info
+          </button>
         </div>
 
-        {/* Services & Pricing */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <h2 className="text-lg font-semibold text-purple-900 mb-4">Services & Pricing</h2>
-          <div className="space-y-3">
-            {provider.services_offered.map((service) => {
-              const priceRange = provider.price_ranges[service];
-              return (
-                <div
-                  key={service}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
-                >
-                  <span className="font-medium text-purple-900">{service}</span>
-                  {priceRange && (
-                    <span className="text-lavender-400 font-semibold">
-                      €{priceRange.min}–{priceRange.max}/hr
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Languages */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Languages className="w-5 h-5 text-lavender-400" />
-            <h2 className="text-lg font-semibold text-purple-900">Languages Spoken</h2>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {provider.languages.map((language) => (
-              <span
-                key={language}
-                className="px-4 py-2 bg-lavender-200 text-lavender-400 rounded-full font-medium"
-              >
-                {language}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Service Areas */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-5 h-5 text-lavender-400" />
-            <h2 className="text-lg font-semibold text-purple-900">Service Areas</h2>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {provider.service_areas.map((area) => (
-              <span
-                key={area}
-                className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium"
-              >
-                {area}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Availability */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-          <div className="flex items-center gap-2 mb-3">
-            <Calendar className="w-5 h-5 text-lavender-400" />
-            <h2 className="text-lg font-semibold text-purple-900">Availability</h2>
-          </div>
-          <div className="space-y-2">
-            {Object.entries(provider.availability).map(([day, hours]) => (
-              <div
-                key={day}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-              >
-                <span className="font-medium text-purple-900 capitalize">{day}</span>
-                <span className="text-purple-700 text-sm">
-                  {Array.isArray(hours) ? hours.join(', ') : 'Closed'}
-                </span>
+        {/* Caretakers Tab */}
+        {activeTab === 'caretakers' && (
+          <div className="space-y-4">
+            {caretakers.length === 0 ? (
+              <div className="bg-white rounded-2xl p-8 text-center shadow">
+                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-purple-900 mb-2">
+                  No caretakers available
+                </h3>
+                <p className="text-purple-700">
+                  This agency hasn't added individual caretaker profiles yet.
+                </p>
               </div>
-            ))}
+            ) : (
+              caretakers.map((caretaker) => (
+                <CaretakerCard
+                  key={caretaker.id}
+                  caretaker={caretaker}
+                  onSelect={() => navigate(`/client/book/${provider.id}?caretaker=${caretaker.id}`)}
+                  showSelectButton
+                />
+              ))
+            )}
           </div>
-        </div>
+        )}
+
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="space-y-6">
+            {/* About Section */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <h2 className="text-lg font-semibold text-purple-900 mb-3">About</h2>
+              <p className="text-purple-700 leading-relaxed">{provider.description}</p>
+            </div>
+
+            {/* Services & Pricing */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <h2 className="text-lg font-semibold text-purple-900 mb-4">Services & Pricing</h2>
+              <div className="space-y-3">
+                {provider.services_offered.map((service) => {
+                  const priceRange = provider.price_ranges[service];
+                  return (
+                    <div
+                      key={service}
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                    >
+                      <span className="font-medium text-purple-900">{service}</span>
+                      {priceRange && (
+                        <span className="text-lavender-400 font-semibold">
+                          €{priceRange.min}–{priceRange.max}/hr
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Languages */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Languages className="w-5 h-5 text-lavender-400" />
+                <h2 className="text-lg font-semibold text-purple-900">Languages Spoken</h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {provider.languages.map((language) => (
+                  <span
+                    key={language}
+                    className="px-4 py-2 bg-lavender-200 text-lavender-400 rounded-full font-medium"
+                  >
+                    {language}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Service Areas */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin className="w-5 h-5 text-lavender-400" />
+                <h2 className="text-lg font-semibold text-purple-900">Service Areas</h2>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {provider.service_areas.map((area) => (
+                  <span
+                    key={area}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full font-medium"
+                  >
+                    {area}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Availability */}
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Calendar className="w-5 h-5 text-lavender-400" />
+                <h2 className="text-lg font-semibold text-purple-900">Availability</h2>
+              </div>
+              <div className="space-y-2">
+                {Object.entries(provider.availability).map(([day, hours]) => (
+                  <div
+                    key={day}
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  >
+                    <span className="font-medium text-purple-900 capitalize">{day}</span>
+                    <span className="text-purple-700 text-sm">
+                      {Array.isArray(hours) ? hours.join(', ') : 'Closed'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Fixed Bottom CTA */}
