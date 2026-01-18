@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { ArrowLeft, ArrowRight, CheckCircle, Building2, DollarSign, Calendar, Languages } from 'lucide-react';
-
+import { ArrowLeft, ArrowRight, CheckCircle, Building2, Calendar, Languages } from 'lucide-react';
 const SERVICES = [
   'Elderly care',
   'Household help',

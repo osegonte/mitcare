@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
-import { Heart, Calendar, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
+import { Heart, Calendar, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import type { Booking } from '../../types';
 
 type BookingWithClient = Booking & {
