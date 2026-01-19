@@ -92,7 +92,9 @@ export default function ResultsPage() {
           <h1 className="text-2xl font-bold text-purple-900">
             {location || 'All'} Care Agencies
           </h1>
-          <p className="text-sm text-purple-700">{providers.length} agencies found</p>
+          <p className="text-sm text-purple-700">
+            {providers.length} {providers.length === 1 ? 'agency' : 'agencies'} found
+          </p>
         </div>
       </header>
 
@@ -187,7 +189,7 @@ export default function ResultsPage() {
                       <span className="whitespace-nowrap">{provider.response_time}</span>
                     </div>
                     <div className="whitespace-nowrap">
-                      {provider.completed_bookings} bookings
+                      {provider.completed_bookings} {provider.completed_bookings === 1 ? 'booking' : 'bookings'}
                     </div>
                   </div>
                   <ChevronRight className="w-5 h-5 text-purple-700 flex-shrink-0" />

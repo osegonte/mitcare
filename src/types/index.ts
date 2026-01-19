@@ -56,7 +56,7 @@ export interface Booking {
   id: string;
   client_id: string;
   provider_id: string;
-  caretaker_id?: string; // NEW: Optional specific caretaker
+  caretaker_id?: string;
   service_type: string;
   date_time: string;
   address: string;
@@ -73,7 +73,24 @@ export interface SavedProvider {
   created_at: string;
 }
 
-// NEW: Extended types for join queries
+export interface Review {
+  id: string;
+  booking_id: string;
+  client_id: string;
+  provider_id: string;
+  caretaker_id?: string;
+  rating: number;
+  comment?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReviewWithClient extends Review {
+  client: {
+    full_name: string;
+  };
+}
+
 export interface ProviderWithCaretakers extends Provider {
   caretakers: Caretaker[];
 }

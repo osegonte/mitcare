@@ -16,6 +16,7 @@ import BookingConfirmationPage from './pages/client/BookingConfirmationPage';
 import AppointmentsPage from './pages/client/AppointmentsPage';
 import ProviderBookingsPage from './pages/provider/ProviderBookingsPage';
 import ProviderOnboarding from './pages/provider/ProviderOnboarding';
+import LeaveReviewPage from './pages/client/LeaveReviewPage';
 
 function App() {
   return (
@@ -88,6 +89,15 @@ function App() {
               element={
                 <ProtectedRoute role="client">
                   <AppointmentsPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/client/review/:bookingId"
+              element={
+                <ProtectedRoute role="client">
+                  <LeaveReviewPage />
                 </ProtectedRoute>
               }
             />

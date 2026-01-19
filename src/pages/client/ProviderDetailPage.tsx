@@ -121,7 +121,7 @@ export default function ProviderDetailPage() {
               <div className="flex items-center gap-1 text-sm text-purple-500">
                 <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 <span className="font-semibold">4.{Math.floor(Math.random() * 5) + 5}</span>
-                <span className="text-gray-400 ml-1">({provider.completed_bookings} bookings)</span>
+                <span className="text-gray-400 ml-1">({provider.completed_bookings} {provider.completed_bookings === 1 ? 'booking' : 'bookings'})</span>
               </div>
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function ProviderDetailPage() {
             }`}
           >
             <Users className="w-5 h-5" />
-            Our Caretakers ({caretakers.length})
+            {caretakers.length === 1 ? 'Our Caretaker' : 'Our Caretakers'} ({caretakers.length})
           </button>
           <button
             onClick={() => setActiveTab('overview')}

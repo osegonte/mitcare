@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
-import { ArrowLeft, Calendar, MapPin, Clock, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Clock, AlertCircle, CheckCircle, XCircle, MessageSquare } from 'lucide-react';
 import type { Booking, Provider } from '../../types';
 import { LoadingSkeleton } from '../../components/shared/LoadingSkeleton';
 
@@ -29,7 +29,6 @@ export default function AppointmentsPage() {
     try {
       setLoading(true);
       
-      // OPTIMIZED: Single query to get all data at once
       const { data, error } = await supabase
         .from('bookings')
         .select(`
@@ -41,7 +40,6 @@ export default function AppointmentsPage() {
 
       if (error) throw error;
 
-      // Transform the data to match our type
       const bookingsWithProvider = data.map(booking => ({
         ...booking,
         provider: booking.provider,
@@ -67,7 +65,6 @@ export default function AppointmentsPage() {
 
       if (error) throw error;
 
-      // Refresh bookings
       fetchBookings();
     } catch (error) {
       console.error('Error cancelling booking:', error);
@@ -142,7 +139,6 @@ export default function AppointmentsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br bg-lavender-50">
-      {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <button
@@ -153,13 +149,13 @@ export default function AppointmentsPage() {
             <span>Back to Home</span>
           </button>
           <h1 className="text-2xl font-bold text-purple-900">My Appointments</h1>
-          <p className="text-sm text-purple-700">{bookings.length} total bookings</p>
+          <p className="text-sm text-purple-700">
+            {bookings.length} total {bookings.length === 1 ? 'booking' : 'bookings'}
+          </p>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 py-8">
-        {/* Tabs */}
         <div className="bg-white rounded-2xl p-2 shadow-lg mb-6 flex gap-2">
           <button
             onClick={() => setActiveTab('upcoming')}
@@ -183,7 +179,6 @@ export default function AppointmentsPage() {
           </button>
         </div>
 
-        {/* Bookings List */}
         {filteredBookings.length === 0 ? (
           <div className="bg-white rounded-2xl p-8 text-center shadow">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -215,7 +210,6 @@ export default function AppointmentsPage() {
                   key={booking.id}
                   className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all"
                 >
-                  {/* Header */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-purple-900 mb-1">
@@ -226,7 +220,6 @@ export default function AppointmentsPage() {
                     {getStatusBadge(booking.status)}
                   </div>
 
-                  {/* Date & Time */}
                   <div className="grid grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded-xl">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-5 h-5 text-lavender-400" />
@@ -244,7 +237,6 @@ export default function AppointmentsPage() {
                     </div>
                   </div>
 
-                  {/* Address */}
                   <div className="flex items-start gap-2 mb-4">
                     <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                     <div>
@@ -253,7 +245,6 @@ export default function AppointmentsPage() {
                     </div>
                   </div>
 
-                  {/* Notes */}
                   {booking.notes && (
                     <div className="mb-4 p-3 bg-lavender-50 rounded-lg">
                       <p className="text-xs text-purple-500 mb-1">Notes</p>
@@ -261,7 +252,6 @@ export default function AppointmentsPage() {
                     </div>
                   )}
 
-                  {/* Status Messages */}
                   {booking.status === 'pending' && (
                     <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-start gap-2">
                       <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
@@ -289,7 +279,25 @@ export default function AppointmentsPage() {
                     </div>
                   )}
 
-                  {/* Actions */}
+                  {booking.status === 'completed' && (
+                    <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                      <div className="flex items-start gap-3">
+                        <MessageSquare className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-blue-900 mb-2">
+                            How was your experience?
+                          </p>
+                          <button
+                            onClick={() => navigate(`/client/review/${booking.id}`)}
+                            className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                          >
+                            Leave a Review
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {canCancel && activeTab === 'upcoming' && (
                     <div className="pt-4 border-t border-gray-100">
                       <button

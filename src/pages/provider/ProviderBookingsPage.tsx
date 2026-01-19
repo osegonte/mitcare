@@ -213,7 +213,9 @@ export default function ProviderBookingsPage() {
             <span>Back to Dashboard</span>
           </button>
           <h1 className="text-2xl font-bold text-purple-900">Booking Requests</h1>
-          <p className="text-sm text-purple-700">{bookings.length} total bookings</p>
+          <p className="text-sm text-purple-700">
+            {bookings.length} total {bookings.length === 1 ? 'booking' : 'bookings'}
+          </p>
         </div>
       </header>
 
